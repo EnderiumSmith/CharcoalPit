@@ -1,0 +1,16 @@
+[
+{
+  "modid": "charcoal_pit",
+  "name": "Charcoal Pit",
+  "description": "Free shape multiblocks for charcoal an coke production",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["EnderiumSmith"],
+  "credits": "inspired by TFC charcoal pits",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

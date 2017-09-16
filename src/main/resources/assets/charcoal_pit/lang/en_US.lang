@@ -1,0 +1,11 @@
+tile.charcoal_pit:log_pile.name=Log Pile
+tile.charcoal_pit:block_coke.name=Coal Coke Block
+tile.charcoal_pit:stone_creosote_collector.name=Stone Brick Creosote Oil Funnel
+tile.charcoal_pit:brick_creosote_collector.name=Brick Creosote Oil Funnel
+tile.charcoal_pit:nether_creosote_collector.name=Nether Brick Creosote Oil Funnel
+
+item.charcoal_pit:item_coke.name=Coal Coke
+item.charcoal_pit:item_ash.name=Ash
+item.charcoal_pit:item_fertilizer.name=Fertilizer
+
+fluid.creosote=Creosote Oil
