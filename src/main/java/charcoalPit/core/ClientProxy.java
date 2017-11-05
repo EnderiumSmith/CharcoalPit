@@ -3,11 +3,14 @@ package charcoalPit.core;
 import charcoalPit.blocks.BlocksRegistry;
 import charcoalPit.fluids.FluidsRegistry;
 import charcoalPit.items.ItemsRegistry;
+import charcoalPit.tile.TESRPotteryKiln;
+import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,6 +21,7 @@ public class ClientProxy extends CommonProxy{
 		super.preInit(e);
 		BlocksRegistry.initModel();
 		ItemsRegistry.initModel();
+		ClientRegistry.bindTileEntitySpecialRenderer(TilePotteryKiln.class, new TESRPotteryKiln());
 		StateMapperBase mapper=new StateMapperBase() {
 			
 			@Override

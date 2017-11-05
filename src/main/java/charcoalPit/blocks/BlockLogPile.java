@@ -13,6 +13,7 @@ public class BlockLogPile extends BlockBase{
 		Blocks.FIRE.setFireInfo(this, 5, 5);
 		setHardness(2F);
 		setSoundType(SoundType.WOOD);
+		setHarvestLevel("axe", 0);
 	}
 
 }

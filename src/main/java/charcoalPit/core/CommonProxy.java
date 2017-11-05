@@ -9,6 +9,7 @@ import charcoalPit.fluids.FluidsRegistry;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TileCreosoteCollector;
+import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,8 +39,12 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent e){
 		GameRegistry.registerTileEntity(TileActivePile.class, Constants.MODID+"active_pile");
 		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+"creosote_collector");
+		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+"pottery_kiln");
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
+		MinecraftForge.EVENT_BUS.register(new PotionRegistry());
+		PotionRegistry.initPotions();
+		PotteryKilnRecipe.initRecipes();
 		if(Config.RegisterRecipes)
 			Crafting.registerRecipes();
 	}
@@ -50,12 +55,27 @@ public class CommonProxy {
 				Map.Entry<ItemStack,ItemStack> entry = entries.next();
 				ItemStack result = entry.getValue();
 				ItemStack input = entry.getKey();
+				if(input.isEmpty())
+					continue;
 				int[] ids=OreDictionary.getOreIDs(input);
 				for(int id:ids){
 					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, charcoal)){
 						entries.remove();
 						break;
 					}
+				}
+			}
+		}
+		if(Config.DisableVanillaPottery){
+			Map<ItemStack, ItemStack> recipes=FurnaceRecipes.instance().getSmeltingList();
+			for(Iterator<Map.Entry<ItemStack, ItemStack>> entries=recipes.entrySet().iterator(); entries.hasNext();){
+				Map.Entry<ItemStack, ItemStack> entry=entries.next();
+				ItemStack result=entry.getValue();
+				ItemStack input=entry.getKey();
+				if(input.isEmpty())
+					continue;
+				if(PotteryKilnRecipe.isValidInput(input)&&PotteryKilnRecipe.getResult(input).isItemEqual(result)){
+					entries.remove();
 				}
 			}
 		}
@@ -80,6 +100,21 @@ public class CommonProxy {
 					break;
 				}
 			}
+		}
+		Item wood=Item.getByNameOrId(Config.WoodDefault);
+		if(wood!=null){
+			ItemStack woodStack=new ItemStack(wood, 1, Config.WoodMeta);
+			int[] ids=OreDictionary.getOreIDs(woodStack);
+			for(int id:ids){
+				if(OreDictionary.getOreName(id).equals("logWood")){
+					ItemsRegistry.wood=woodStack.copy();
+					break;
+				}
+			}
+		}
+		Item thatch=Item.getByNameOrId(Config.ThatchID);
+		if(thatch!=null){
+			ItemsRegistry.thatch=new ItemStack(thatch, 1, Config.ThatchMeta);
 		}
 		if(config.hasChanged()){
 			config.save();

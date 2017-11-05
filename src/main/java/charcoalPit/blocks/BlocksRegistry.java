@@ -13,6 +13,7 @@ public class BlocksRegistry {
 	public static BlockCreosoteCollector StoneCollector=new BlockCreosoteCollector("stone_creosote_collector", false);
 	public static BlockCreosoteCollector BrickCollector=new BlockCreosoteCollector("brick_creosote_collector", true);
 	public static BlockCreosoteCollector NetherCollector=new BlockCreosoteCollector("nether_creosote_collector", true);
+	public static BlockPotteryKiln PotteryKiln=new BlockPotteryKiln("pottery_kiln");
 	
 	public static void registerBlocks(){
 		LogPile.register();
@@ -24,6 +25,7 @@ public class BlocksRegistry {
 		StoneCollector.register();
 		BrickCollector.register();
 		NetherCollector.register();
+		PotteryKiln.register();
 	}
 	public static void initModel(){
 		LogPile.initModel();
@@ -31,5 +33,6 @@ public class BlocksRegistry {
 		StoneCollector.initModel();
 		BrickCollector.initModel();
 		NetherCollector.initModel();
+		PotteryKiln.initModel();
 	}
 }
