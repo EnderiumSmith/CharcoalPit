@@ -10,6 +10,7 @@ public class ItemsRegistry {
 	public static ItemBase Ash=new ItemBase("item_ash");
 	public static ItemFertilizer Fertilizer=new ItemFertilizer("item_fertilizer");
 	public static ItemBase Clay_Pot=new ItemBase("clay_pot");
+	public static ItemBase Magic_Coal=new ItemBase("alchemical_coal");
 	public static ItemStack coke;
 	public static ItemStack ash;
 	public static ItemStack wood;
@@ -20,6 +21,7 @@ public class ItemsRegistry {
 		Ash.register();
 		Fertilizer.register();
 		Clay_Pot.register();
+		Magic_Coal.register();
 		coke=new ItemStack(Coke);
 		ash=new ItemStack(Ash);
 		wood=new ItemStack(Blocks.LOG);
@@ -30,6 +32,7 @@ public class ItemsRegistry {
 		Ash.initModel();
 		Fertilizer.initModel();
 		Clay_Pot.initModel();
+		Magic_Coal.initModel();
 	}
 	public static void initOreDict(){
 		OreDictionary.registerOre("fuelCoke", Coke);

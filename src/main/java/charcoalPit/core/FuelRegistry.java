@@ -16,6 +16,8 @@ public class FuelRegistry implements IFuelHandler{
 			return Config.CokeFuel;
 		if(fuel.getItem()==Item.getItemFromBlock(BlocksRegistry.CokeBlock))
 			return Config.CokeFuel*10;
+		if(fuel.getItem()==ItemsRegistry.Magic_Coal)
+			return 6400;
 		if(FluidRegistry.getFluidStack("creosote", 1000).isFluidStackIdentical(FluidStack.loadFluidStackFromNBT(fuel.getTagCompound()))){
 			return Config.CreosoteFuel;
 		}

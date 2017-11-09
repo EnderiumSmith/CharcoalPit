@@ -117,10 +117,18 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 		burnTime=compound.getInteger("time");
 		isValid=compound.getBoolean("valid");
 		pottery.deserializeNBT(compound.getCompoundTag("pottery"));
+		System.out.println(this.world!=null);
 	}
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return pottery.serializeNBT();
+		NBTTagCompound nbt=super.getUpdateTag();
+		nbt.setTag("pottery", pottery.serializeNBT());
+		return nbt;
+	}
+	@Override
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		pottery.deserializeNBT(tag.getCompoundTag("pottery"));
 	}
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {

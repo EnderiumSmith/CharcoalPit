@@ -76,6 +76,5 @@ public class Config {
 		DisableVanillaPottery=cfg.getBoolean("DisableVanillaPottery", CATEGORY_GENERAL, true, "If the vanilla methods of making pottery should be disabled");
 		
 		
-		
 	}
 }

@@ -10,10 +10,12 @@ import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TileCreosoteCollector;
 import charcoalPit.tile.TilePotteryKiln;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -115,6 +117,14 @@ public class CommonProxy {
 		Item thatch=Item.getByNameOrId(Config.ThatchID);
 		if(thatch!=null){
 			ItemsRegistry.thatch=new ItemStack(thatch, 1, Config.ThatchMeta);
+		}
+		for(PotteryKilnRecipe recipe:PotteryKilnRecipe.recipes){
+			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(recipe.input.getItem(), new DispenserPlaceKiln());
+		}
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemsRegistry.thatch.getItem(), new DispenserPlaceKiln());
+		NonNullList<ItemStack> woods=OreDictionary.getOres("logWood");
+		for(ItemStack stack:woods){
+			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(stack.getItem(), new DispenserPlaceKiln());
 		}
 		if(config.hasChanged()){
 			config.save();

@@ -2,6 +2,7 @@ package charcoalPit.tile;
 
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
+import charcoalPit.blocks.BlocksRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -19,7 +20,7 @@ public class TESRPotteryKiln extends TileEntitySpecialRenderer<TilePotteryKiln>{
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.disableRescaleNormal();
-		if(te.getWorld().getBlockState(te.getPos()).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
+		if(te.getWorld().getBlockState(te.getPos()).getBlock()==BlocksRegistry.PotteryKiln&&te.getWorld().getBlockState(te.getPos()).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
 			ItemStack stack=te.pottery.getStackInSlot(0);
 			if(!stack.isEmpty()){
 				item=new EntityItem(te.getWorld());
