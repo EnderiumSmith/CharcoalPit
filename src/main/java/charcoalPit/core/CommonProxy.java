@@ -29,24 +29,34 @@ public class CommonProxy {
 	public static Configuration config;
 	public static ItemStack charcoal=new ItemStack(Items.COAL, 1, 1);
 	public void preInit(FMLPreInitializationEvent e){
+		//read config
 		File file=e.getModConfigurationDirectory();
 		config=new Configuration(new File(file.getPath(),"charcoal_pit.cfg"));
 		Config.readcfg();
-		BlocksRegistry.registerBlocks();
-		ItemsRegistry.registerItems();
-		ItemsRegistry.initOreDict();
-		if(Config.RegisterCreosote)
-			FluidsRegistry.registerFluids();
+		//register item/block registry
+		MinecraftForge.EVENT_BUS.register(BlocksRegistry.class);
+		MinecraftForge.EVENT_BUS.register(ItemsRegistry.class);
+		
+		ItemsRegistry.initStacks();
+		
+		FluidsRegistry.registerFluids();
 	}
 	public void init(FMLInitializationEvent e){
+		//tile entity
 		GameRegistry.registerTileEntity(TileActivePile.class, Constants.MODID+"active_pile");
 		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+"creosote_collector");
 		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+"pottery_kiln");
+		
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
 		MinecraftForge.EVENT_BUS.register(new PotionRegistry());
+		
 		PotionRegistry.initPotions();
-		PotteryKilnRecipe.initRecipes();
+		ItemsRegistry.initOreDict();
+		
+		if(!Config.DisableDefaultPottery)
+			PotteryKilnRecipe.initRecipes();
+		PotteryKilnRecipe.initCustomRecipes(Config.PotteryRecipes);
 		if(Config.RegisterRecipes)
 			Crafting.registerRecipes();
 	}
@@ -87,7 +97,7 @@ public class CommonProxy {
 			int[] ids=OreDictionary.getOreIDs(ashStack);
 			for(int id:ids){
 				if(OreDictionary.getOreName(id).equals("dustAsh")){
-					ItemsRegistry.ash=ashStack.copy();
+					ItemsRegistry.ash_stack=ashStack.copy();
 					break;
 				}
 			}
@@ -98,7 +108,7 @@ public class CommonProxy {
 			int[] ids=OreDictionary.getOreIDs(cokeStack);
 			for(int id:ids){
 				if(OreDictionary.getOreName(id).equals("fuelCoke")){
-					ItemsRegistry.coke=cokeStack.copy();
+					ItemsRegistry.coke_stack=cokeStack.copy();
 					break;
 				}
 			}
@@ -109,19 +119,19 @@ public class CommonProxy {
 			int[] ids=OreDictionary.getOreIDs(woodStack);
 			for(int id:ids){
 				if(OreDictionary.getOreName(id).equals("logWood")){
-					ItemsRegistry.wood=woodStack.copy();
+					ItemsRegistry.wood_stack=woodStack.copy();
 					break;
 				}
 			}
 		}
 		Item thatch=Item.getByNameOrId(Config.ThatchID);
 		if(thatch!=null){
-			ItemsRegistry.thatch=new ItemStack(thatch, 1, Config.ThatchMeta);
+			ItemsRegistry.thatch_stack=new ItemStack(thatch, 1, Config.ThatchMeta);
 		}
 		for(PotteryKilnRecipe recipe:PotteryKilnRecipe.recipes){
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(recipe.input.getItem(), new DispenserPlaceKiln());
 		}
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemsRegistry.thatch.getItem(), new DispenserPlaceKiln());
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemsRegistry.thatch_stack.getItem(), new DispenserPlaceKiln());
 		NonNullList<ItemStack> woods=OreDictionary.getOres("logWood");
 		for(ItemStack stack:woods){
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(stack.getItem(), new DispenserPlaceKiln());

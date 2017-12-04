@@ -20,7 +20,7 @@ public class TESRPotteryKiln extends TileEntitySpecialRenderer<TilePotteryKiln>{
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.disableRescaleNormal();
-		if(te.getWorld().getBlockState(te.getPos()).getBlock()==BlocksRegistry.PotteryKiln&&te.getWorld().getBlockState(te.getPos()).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
+		if(te.getWorld().getBlockState(te.getPos()).getBlock()==BlocksRegistry.potteryKiln&&te.getWorld().getBlockState(te.getPos()).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
 			ItemStack stack=te.pottery.getStackInSlot(0);
 			if(!stack.isEmpty()){
 				item=new EntityItem(te.getWorld());
@@ -31,7 +31,7 @@ public class TESRPotteryKiln extends TileEntitySpecialRenderer<TilePotteryKiln>{
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(0.5D, -0.1D, 0.5D);
 				GlStateManager.scale(1D, 1D, 1D);
-				Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0, 0, 0, 0, 0, false);
+				Minecraft.getMinecraft().getRenderManager().renderEntity(item, 0, 0, 0, 0, 0, false);
 				GlStateManager.popMatrix();
 			}
 		}

@@ -54,7 +54,7 @@ public class BlockActivePile extends BlockBase implements ITileEntityProvider{
 	}
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return isCoal?Item.getItemFromBlock(Blocks.COAL_BLOCK):Item.getItemFromBlock(BlocksRegistry.LogPile);
+		return isCoal?Item.getItemFromBlock(Blocks.COAL_BLOCK):Item.getItemFromBlock(BlocksRegistry.logPile);
 	}
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {

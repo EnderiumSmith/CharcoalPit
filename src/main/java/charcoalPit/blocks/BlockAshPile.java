@@ -49,17 +49,17 @@ public class BlockAshPile extends BlockBase{
 	            }
 	        }
 	        for(int i=0;i<(isCoke?Config.CokeTotal:Config.CharcoalTotal)-count;i++){
-	        	ret.add(ItemsRegistry.ash.copy());
+	        	ret.add(ItemsRegistry.ash_stack.copy());
 	        }
 	        return ret;
 	}
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return isCoke?ItemsRegistry.coke.getItem():Items.COAL;
+		return isCoke?ItemsRegistry.coke_stack.getItem():Items.COAL;
 	}
 	@Override
 	public int damageDropped(IBlockState state) {
-		return isCoke?ItemsRegistry.coke.getItemDamage():1;
+		return isCoke?ItemsRegistry.coke_stack.getItemDamage():1;
 	}
 	@Override
 	public int quantityDropped(IBlockState state, int fortune, Random random) {

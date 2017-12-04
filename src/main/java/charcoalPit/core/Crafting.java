@@ -13,57 +13,57 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 public class Crafting {
 	
 	public static void registerRecipes(){
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.LogPile, new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.logPile, new Object[]{
 				"LLL",
 				"LLL",
 				"LLL",
 				'L',"logWood"
 		}).setRegistryName("logPile"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.StoneCollector, new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.stoneCollector, new Object[]{
 				"M M",
 				"MBM",
 				"MMM",
 				'M',Blocks.STONEBRICK,
 				'B',Items.BUCKET
 		}).setRegistryName("stoneFunnel"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.BrickCollector, new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.brickCollector, new Object[]{
 				"M M",
 				"MBM",
 				"MMM",
 				'M',"ingotBrick",
 				'B',Items.BUCKET
 		}).setRegistryName("brickFunnel"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.NetherCollector, new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.netherCollector, new Object[]{
 				"M M",
 				"MBM",
 				"MMM",
 				'M',"ingotBrickNether",
 				'B',Items.BUCKET
 		}).setRegistryName("netherFunnel"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.CokeBlock, new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.cokeBlock, new Object[]{
 				"CCC",
 				"CCC",
 				"CCC",
 				'C',"fuelCoke"
 		}).setRegistryName("blockCoke"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.coke.getItem(), 9, ItemsRegistry.coke.getItemDamage()), new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.coke_stack.getItem(), 9, ItemsRegistry.coke_stack.getItemDamage()), new Object[]{
 				"B",
-				'B',BlocksRegistry.CokeBlock
+				'B',BlocksRegistry.cokeBlock
 		}).setRegistryName("itemCoke"));
-		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.Clay_Pot), new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.clay_Pot), new Object[]{
 				"C C",
 				" C ",
 				'C', Items.CLAY_BALL
 		}).setRegistryName("clayPot"));
-		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.Fertilizer, 2), new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.fertilizer, 2), new Object[]{
 				Items.ROTTEN_FLESH,"dustAsh","dustAsh","dustAsh","dustAsh"
 		}).setRegistryName("fertilizer1"));
-		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.Fertilizer, 2), new Object[]{
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.fertilizer, 2), new Object[]{
 				"dirt","dustAsh","dustAsh","dustAsh","dustAsh"
 		}).setRegistryName("fertilizer2"));
 		if(Config.DismantleLogPiles){
-			ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.wood.getItem(), 9, ItemsRegistry.wood.getItemDamage()), new Object[]{
-				BlocksRegistry.LogPile
+			ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.wood_stack.getItem(), 9, ItemsRegistry.wood_stack.getItemDamage()), new Object[]{
+				BlocksRegistry.logPile
 			}).setRegistryName("logPileDismantle"));
 		}
 	}

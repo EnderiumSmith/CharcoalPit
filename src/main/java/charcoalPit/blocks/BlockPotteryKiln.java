@@ -179,12 +179,12 @@ public class BlockPotteryKiln extends BlockBase implements ITileEntityProvider{
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
 			int fortune) {
 		if(state.getValue(TYPE)==EnumKilnTypes.COMPLETE){
-			drops.add(new ItemStack(ItemsRegistry.ash.getItem(), Config.PotteryAsh, ItemsRegistry.ash.getItemDamage()));
+			drops.add(new ItemStack(ItemsRegistry.ash_stack.getItem(), Config.PotteryAsh, ItemsRegistry.ash_stack.getItemDamage()));
 		}else if(state.getValue(TYPE)==EnumKilnTypes.WOOD||state.getValue(TYPE)==EnumKilnTypes.ACTIVE){
-			drops.add(new ItemStack(ItemsRegistry.wood.getItem(), Config.WoodAmount, ItemsRegistry.wood.getItemDamage()));
-			drops.add(new ItemStack(ItemsRegistry.thatch.getItem(), Config.ThatchAmount, ItemsRegistry.thatch.getItemDamage()));
+			drops.add(new ItemStack(ItemsRegistry.wood_stack.getItem(), Config.WoodAmount, ItemsRegistry.wood_stack.getItemDamage()));
+			drops.add(new ItemStack(ItemsRegistry.thatch_stack.getItem(), Config.ThatchAmount, ItemsRegistry.thatch_stack.getItemDamage()));
 		}else if(state.getValue(TYPE)==EnumKilnTypes.THATCH){
-			drops.add(new ItemStack(ItemsRegistry.thatch.getItem(), Config.ThatchAmount, ItemsRegistry.thatch.getItemDamage()));
+			drops.add(new ItemStack(ItemsRegistry.thatch_stack.getItem(), Config.ThatchAmount, ItemsRegistry.thatch_stack.getItemDamage()));
 		}
 	}
 	@Override
@@ -212,7 +212,7 @@ public class BlockPotteryKiln extends BlockBase implements ITileEntityProvider{
 						return true;
 					}
 				}else{
-					if(!playerIn.getHeldItem(hand).isEmpty()&&ItemStack.areItemsEqual(playerIn.getHeldItem(hand),ItemsRegistry.thatch)&&playerIn.getHeldItem(hand).getCount()>=Config.ThatchAmount){
+					if(!playerIn.getHeldItem(hand).isEmpty()&&ItemStack.areItemsEqual(playerIn.getHeldItem(hand),ItemsRegistry.thatch_stack)&&playerIn.getHeldItem(hand).getCount()>=Config.ThatchAmount){
 						if(worldIn.isRemote){
 							return true;
 						}else{

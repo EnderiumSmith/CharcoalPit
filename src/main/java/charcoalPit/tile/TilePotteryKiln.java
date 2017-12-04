@@ -42,7 +42,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 					ItemStack result=PotteryKilnRecipe.getResult(pottery.getStackInSlot(0));
 					result.setCount(pottery.getStackInSlot(0).getCount());
 					pottery.setStackInSlot(0, result);
-					this.world.setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
+					this.world.setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
 					this.world.setBlockToAir(this.pos.offset(EnumFacing.UP));
 					burnTime--;
 				}
@@ -89,7 +89,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 				invalidTicks++;
 			}else{
 				setActive(false);
-				this.world.setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD), 2);
+				this.world.setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD), 2);
 				this.world.setBlockState(pos.offset(EnumFacing.UP), Blocks.AIR.getDefaultState(), 2);
 				invalidTicks=0;
 			}

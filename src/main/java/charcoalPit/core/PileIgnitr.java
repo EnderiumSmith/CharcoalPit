@@ -24,7 +24,7 @@ public class PileIgnitr {
 				event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.FIRE){
 			for(EnumFacing facing:event.getNotifiedSides()){
 				BlockPos pos=event.getPos().offset(facing);
-				if(event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.LogPile){
+				if(event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.logPile){
 					//found log pile to ignite
 					igniteLogs(event.getWorld(),pos);
 					
@@ -47,7 +47,7 @@ public class PileIgnitr {
 						//found coal pile to ignite
 						igniteCoal(event.getWorld(),pos);
 					}
-				}else if(facing==EnumFacing.DOWN&&event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.PotteryKiln){
+				}else if(facing==EnumFacing.DOWN&&event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.potteryKiln){
 					//found pottery kiln to ignite
 					ignitePottery(event.getWorld(), pos);
 				}
@@ -55,8 +55,8 @@ public class PileIgnitr {
 		}
 	}
 	public void igniteLogs(World world, BlockPos pos){
-		if(world.getBlockState(pos).getBlock()==BlocksRegistry.LogPile){
-			world.setBlockState(pos, BlocksRegistry.ActiveLogPile.getDefaultState());
+		if(world.getBlockState(pos).getBlock()==BlocksRegistry.logPile){
+			world.setBlockState(pos, BlocksRegistry.activeLogPile.getDefaultState());
 			EnumFacing[] neighbors=EnumFacing.VALUES;
 			for(int i=0;i<neighbors.length;i++){
 				igniteLogs(world, pos.offset(neighbors[i]));
@@ -65,7 +65,7 @@ public class PileIgnitr {
 	}
 	public void igniteCoal(World world, BlockPos pos){
 		if(world.getBlockState(pos).getBlock()==Blocks.COAL_BLOCK){
-			world.setBlockState(pos, BlocksRegistry.ActiveCoalPile.getDefaultState());
+			world.setBlockState(pos, BlocksRegistry.activeCoalPile.getDefaultState());
 			EnumFacing[] neighbors=EnumFacing.VALUES;
 			for(int i=0;i<neighbors.length;i++){
 				igniteCoal(world, pos.offset(neighbors[i]));
@@ -73,28 +73,28 @@ public class PileIgnitr {
 		}
 	}
 	public void ignitePottery(World world, BlockPos pos){
-		if(world.getBlockState(pos).getBlock()==BlocksRegistry.PotteryKiln&&
+		if(world.getBlockState(pos).getBlock()==BlocksRegistry.potteryKiln&&
 				((EnumKilnTypes)world.getBlockState(pos).getValue(BlockPotteryKiln.TYPE))==EnumKilnTypes.WOOD){
-			world.setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.ACTIVE));
+			world.setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.ACTIVE));
 			((TilePotteryKiln)world.getTileEntity(pos)).setActive(true);
 			for(EnumFacing facing:EnumFacing.HORIZONTALS){
 				ignitePottery(world, pos.offset(facing));
 			}
 		}
 	}
-	@SubscribeEvent(priority=EventPriority.LOWEST)
+	@SubscribeEvent(priority=EventPriority.HIGH)
 	public void placeKiln(PlayerInteractEvent.RightClickBlock event){
-		if(event.getWorld().getBlockState(event.getPos()).getBlock()==BlocksRegistry.PotteryKiln){
+		if(event.getWorld().getBlockState(event.getPos()).getBlock()==BlocksRegistry.potteryKiln){
 			event.setUseBlock(Result.ALLOW);
 		}else if(!event.isCanceled()&&event.getEntityPlayer().isSneaking()&&PotteryKilnRecipe.isValidInput(event.getItemStack())){
 			if(event.getFace()==EnumFacing.UP&&event.getWorld().getBlockState(event.getPos()).isSideSolid(event.getWorld(), event.getPos(), EnumFacing.UP)&&
 					event.getWorld().getBlockState(event.getPos().offset(EnumFacing.UP)).getBlock().isReplaceable(event.getWorld(), event.getPos().offset(EnumFacing.UP))){
 				if(!event.getWorld().isRemote){
-					event.getWorld().setBlockState(event.getPos().offset(EnumFacing.UP), BlocksRegistry.PotteryKiln.getDefaultState());
+					event.getWorld().setBlockState(event.getPos().offset(EnumFacing.UP), BlocksRegistry.potteryKiln.getDefaultState());
 					TilePotteryKiln tile=((TilePotteryKiln)event.getWorld().getTileEntity(event.getPos().offset(EnumFacing.UP)));
 					event.getEntityPlayer().setHeldItem(event.getHand(), tile.pottery.insertItem(0, event.getItemStack(), false));
 					event.getWorld().playSound(null, event.getPos(), SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-					event.getWorld().notifyBlockUpdate(event.getPos().offset(EnumFacing.UP), BlocksRegistry.PotteryKiln.getDefaultState(), BlocksRegistry.PotteryKiln.getDefaultState(), 2);
+					event.getWorld().notifyBlockUpdate(event.getPos().offset(EnumFacing.UP), BlocksRegistry.potteryKiln.getDefaultState(), BlocksRegistry.potteryKiln.getDefaultState(), 2);
 				}
 				event.setUseBlock(Result.DENY);
 				event.setUseItem(Result.DENY);

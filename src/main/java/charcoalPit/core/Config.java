@@ -16,7 +16,6 @@ public class Config {
 	public static Boolean DisableFurnaceCharcoal=true;
 	public static String AshPreference,CokePreference;
 	public static int AshMeta,CokeMeta;
-	public static boolean RegisterCreosote=true;
 	public static boolean RegisterRecipes=true;
 	public static int PotteryTime=8000;
 	public static int ThatchAmount=1,WoodAmount=3;
@@ -26,6 +25,8 @@ public class Config {
 	public static int PotteryAsh=4;
 	public static boolean RainyPottery=true;
 	public static boolean DisableVanillaPottery=true;
+	public static String[] PotteryRecipes;
+	public static boolean DisableDefaultPottery;
 	
 	public static void readcfg(){
 		Configuration cfg=CommonProxy.config;
@@ -61,7 +62,6 @@ public class Config {
 		AshMeta=cfg.getInt("AshMeta", CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "The metadata of the prefered ash item to drop from charcoal/coke piles");
 		CokePreference=cfg.getString("CokePreference", CATEGORY_GENERAL, "railcraft:fuel_coke", "The prefered coke item to drop from coke piles. Defaults to mod's own if invalid");
 		CokeMeta=cfg.getInt("CokeMeta", CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "The metadata of the prefered coke item to drop from coke piles");
-		RegisterCreosote=cfg.getBoolean("RegisterCreosote", CATEGORY_GENERAL, true, "If the mod should register a Creosote Oil fluid. If disabled another mod must provide Creosote Oil or it might crash. Also disables the fluid block");
 		RegisterRecipes=cfg.getBoolean("RegisterRecipes", CATEGORY_GENERAL, true, "Set to false to disable hard coded recipes");
 		PotteryTime=cfg.getInt("PotteryTime", CATEGORY_GENERAL, 8000, 1000, 1000000, "Time the pottery kiln takes to finish. 1000 Ticks = 1 MC hour");
 		ThatchAmount=cfg.getInt("ThatchAmount", CATEGORY_GENERAL, 1, 1, 64, "The amount of thatch needed by the pottery kiln");
@@ -74,6 +74,9 @@ public class Config {
 		PotteryAsh=cfg.getInt("PotteryAsh", CATEGORY_GENERAL, 4, 0, 64, "The amount of ash dropped by a completed pottery kiln");
 		RainyPottery=cfg.getBoolean("RainyPottery", CATEGORY_GENERAL, true, "If pottery kilns get extingushed by rain");
 		DisableVanillaPottery=cfg.getBoolean("DisableVanillaPottery", CATEGORY_GENERAL, true, "If the vanilla methods of making pottery should be disabled");
+		DisableDefaultPottery=cfg.getBoolean("DisableDefaultPottery", CATEGORY_GENERAL, false, "If the default pottery kiln recipes should be disabled");
+		PotteryRecipes=cfg.getStringList("PotteryRecipes", CATEGORY_GENERAL, new String[]{""}, "Register custom pottery kiln recipes in the format 'modId:ingredientId' ingredientMeta 'modId:resultId' resultMeta. ex: minecraft:clay_ball 0 minecraft:brick 0");
+		
 		
 		
 	}

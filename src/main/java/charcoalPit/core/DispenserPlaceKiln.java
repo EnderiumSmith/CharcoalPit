@@ -26,11 +26,11 @@ public class DispenserPlaceKiln extends BehaviorDefaultDispenseItem{
         if(source.getWorld().getBlockState(pos).getBlock().isReplaceable(source.getWorld(), pos)){
         	if(PotteryKilnRecipe.isValidInput(stack)){
         		if(source.getWorld().getBlockState(pos.offset(EnumFacing.DOWN)).isSideSolid(source.getWorld(), pos, EnumFacing.UP)){
-        			source.getWorld().setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState());
+        			source.getWorld().setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState());
         			TilePotteryKiln tile=((TilePotteryKiln)source.getWorld().getTileEntity(pos));
         			ItemStack newStack=tile.pottery.insertItem(0, stack, false);
         			source.getWorld().playSound(null, pos, SoundEvents.BLOCK_GRAVEL_PLACE, SoundCategory.BLOCKS, 1F, 1F);
-        			source.getWorld().notifyBlockUpdate(pos, BlocksRegistry.PotteryKiln.getDefaultState(), BlocksRegistry.PotteryKiln.getDefaultState(), 2);
+        			source.getWorld().notifyBlockUpdate(pos, BlocksRegistry.potteryKiln.getDefaultState(), BlocksRegistry.potteryKiln.getDefaultState(), 2);
         			return newStack;
         		}else{
         			ItemStack itemstack = stack.splitStack(1);
@@ -42,11 +42,11 @@ public class DispenserPlaceKiln extends BehaviorDefaultDispenseItem{
     	        doDispense(source.getWorld(), itemstack, 6, facing, iposition);
     	        return stack;
         	}
-        }else if(source.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.PotteryKiln){
+        }else if(source.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.potteryKiln){
         	if(source.getWorld().getBlockState(pos).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
-        		if(!stack.isEmpty()&&stack.isItemEqual(ItemsRegistry.thatch)&&stack.getCount()>=Config.ThatchAmount){
+        		if(!stack.isEmpty()&&stack.isItemEqual(ItemsRegistry.thatch_stack)&&stack.getCount()>=Config.ThatchAmount){
         			stack.setCount(stack.getCount()-Config.ThatchAmount);
-        			source.getWorld().setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.THATCH));
+        			source.getWorld().setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.THATCH));
         			source.getWorld().playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);
         			return stack;
         		}else{
@@ -60,7 +60,7 @@ public class DispenserPlaceKiln extends BehaviorDefaultDispenseItem{
     				for(int id:ids){
     					if(OreDictionary.getOreName(id).equals("logWood")&&stack.getCount()>=Config.WoodAmount){
     						stack.setCount(stack.getCount()-Config.WoodAmount);
-    						source.getWorld().setBlockState(pos, BlocksRegistry.PotteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD));
+    						source.getWorld().setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.WOOD));
     						source.getWorld().playSound(null, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1F, 1F);
     						return stack;
     					}

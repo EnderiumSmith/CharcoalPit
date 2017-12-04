@@ -43,7 +43,7 @@ public class TileActivePile extends TileEntity implements ITickable{
 					creosote.fill(FluidRegistry.getFluidStack("creosote", isCoke?Config.CokeCreosote:Config.CharcoalCreosote), true);
 					burnTime=isCoke?Config.CokeTime/10:Config.CharcoalTime/10;
 				}else{
-					this.world.setBlockState(this.pos, isCoke?BlocksRegistry.CokePile.getDefaultState():BlocksRegistry.CharcoalPile.getDefaultState());
+					this.world.setBlockState(this.pos, isCoke?BlocksRegistry.cokePile.getDefaultState():BlocksRegistry.charcoalPile.getDefaultState());
 				}
 			}
 			if(creosote.getFluidAmount()>0){
@@ -90,8 +90,8 @@ public class TileActivePile extends TileEntity implements ITickable{
 	}
 	public boolean isValidBlock(IBlockState block){
 		if(isCoke){
-			if(block.getBlock()==BlocksRegistry.ActiveCoalPile||block.getBlock()==BlocksRegistry.BrickCollector||
-					block.getBlock()==BlocksRegistry.NetherCollector||block.getBlock()==BlocksRegistry.CokePile){
+			if(block.getBlock()==BlocksRegistry.activeCoalPile||block.getBlock()==BlocksRegistry.brickCollector||
+					block.getBlock()==BlocksRegistry.netherCollector||block.getBlock()==BlocksRegistry.cokePile){
 				return true;
 			}else{
 				for(String name:Config.CokeBlocks){

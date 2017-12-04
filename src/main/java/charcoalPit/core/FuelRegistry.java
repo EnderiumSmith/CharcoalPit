@@ -12,11 +12,11 @@ public class FuelRegistry implements IFuelHandler{
 
 	@Override
 	public int getBurnTime(ItemStack fuel) {
-		if(fuel.getItem()==ItemsRegistry.Coke)
+		if(fuel.getItem()==ItemsRegistry.coke)
 			return Config.CokeFuel;
-		if(fuel.getItem()==Item.getItemFromBlock(BlocksRegistry.CokeBlock))
+		if(fuel.getItem()==Item.getItemFromBlock(BlocksRegistry.cokeBlock))
 			return Config.CokeFuel*10;
-		if(fuel.getItem()==ItemsRegistry.Magic_Coal)
+		if(fuel.getItem()==ItemsRegistry.magic_Coal)
 			return 6400;
 		if(FluidRegistry.getFluidStack("creosote", 1000).isFluidStackIdentical(FluidStack.loadFluidStackFromNBT(fuel.getTagCompound()))){
 			return Config.CreosoteFuel;

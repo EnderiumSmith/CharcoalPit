@@ -15,10 +15,12 @@ public class BlockBase extends Block{
 		setRegistryName(name);
 		setUnlocalizedName(getRegistryName().toString());
 	}
+	@Deprecated
 	public void register(){
 		ForgeRegistries.BLOCKS.register(this);
 		ForgeRegistries.ITEMS.register(new ItemBlock(this).setRegistryName(getRegistryName()));
 	}
+	@Deprecated
 	public void initModel(){
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(),"inventory"));
 	}
