@@ -4,10 +4,13 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 
+import charcoalPit.CharcoalPit;
 import charcoalPit.blocks.BlocksRegistry;
 import charcoalPit.fluids.FluidsRegistry;
+import charcoalPit.gui.GUIHandler;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileActivePile;
+import charcoalPit.tile.TileCeramicPot;
 import charcoalPit.tile.TileCreosoteCollector;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.BlockDispenser;
@@ -21,6 +24,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -46,10 +50,13 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileActivePile.class, Constants.MODID+"active_pile");
 		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+"creosote_collector");
 		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+"pottery_kiln");
+		GameRegistry.registerTileEntity(TileCeramicPot.class, Constants.MODID+"ceramic_pot");
 		
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
 		MinecraftForge.EVENT_BUS.register(new PotionRegistry());
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(CharcoalPit.instance, new GUIHandler());
 		
 		PotionRegistry.initPotions();
 		ItemsRegistry.initOreDict();
@@ -136,6 +143,7 @@ public class CommonProxy {
 		for(ItemStack stack:woods){
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(stack.getItem(), new DispenserPlaceKiln());
 		}
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ItemsRegistry.ceramicPot, new DispenserPlacePot());
 		if(config.hasChanged()){
 			config.save();
 		}

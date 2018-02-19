@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemsRegistry {
@@ -14,7 +16,7 @@ public class ItemsRegistry {
 	public static ItemBase coke=new ItemBase("item_coke");
 	public static ItemBase ash=new ItemBase("item_ash");
 	public static ItemFertilizer fertilizer=new ItemFertilizer("item_fertilizer");
-	public static ItemBase clay_Pot=new ItemBase("clay_pot");
+	public static ItemBase clay_Pot=new ItemBase("clay_flowerpot");
 	public static ItemBase magic_Coal=new ItemBase("alchemical_coal");
 	
 	public static ItemBlockBase logPile=new ItemBlockBase(BlocksRegistry.logPile);
@@ -22,11 +24,18 @@ public class ItemsRegistry {
 	public static ItemBlockBase stoneCollector=new ItemBlockBase(BlocksRegistry.stoneCollector);
 	public static ItemBlockBase brickCollector=new ItemBlockBase(BlocksRegistry.brickCollector);
 	public static ItemBlockBase netherCollector=new ItemBlockBase(BlocksRegistry.netherCollector);
+	public static ItemBlockBase ceramicPot=new ItemBlockBase(BlocksRegistry.ceramicPot);
+	public static ItemBlockBase clayPot=new ItemBlockBase(BlocksRegistry.clayPot);
 	
 	public static ItemStack coke_stack;
 	public static ItemStack ash_stack;
 	public static ItemStack wood_stack;
 	public static ItemStack thatch_stack;
+	
+	static{
+		ceramicPot.setMaxStackSize(1);
+		clayPot.setMaxStackSize(1);
+	}
 	
 	public static void initStacks(){
 		coke_stack=new ItemStack(coke);
@@ -37,9 +46,11 @@ public class ItemsRegistry {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event){
 		event.getRegistry().registerAll(coke, ash, fertilizer, clay_Pot, magic_Coal,
-				logPile, cokeBlock, stoneCollector, brickCollector, netherCollector);
+				logPile, cokeBlock, stoneCollector, brickCollector, netherCollector,
+				ceramicPot, clayPot);
 	}
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public static void registerModels(ModelRegistryEvent event){
 		coke.initModel();
 		ash.initModel();
@@ -52,6 +63,8 @@ public class ItemsRegistry {
 		stoneCollector.initModel();
 		brickCollector.initModel();
 		netherCollector.initModel();
+		ceramicPot.initModel();
+		clayPot.initModel();
 	}
 	public static void initOreDict(){
 		OreDictionary.registerOre("fuelCoke", coke);

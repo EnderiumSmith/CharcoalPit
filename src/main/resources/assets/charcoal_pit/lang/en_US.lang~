@@ -8,6 +8,7 @@ item.charcoal_pit:item_coke.name=Coal Coke
 item.charcoal_pit:item_ash.name=Ash
 item.charcoal_pit:item_fertilizer.name=Fertilizer
 item.charcoal_pit:clay_pot.name=Clay Pot
+item.charcoal_pit:alchemical_coal.name=Alchemical Coal
 
 fluid.creosote=Creosote Oil
 

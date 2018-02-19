@@ -2,6 +2,7 @@ package charcoalPit.core;
 
 import java.util.ArrayList;
 
+import charcoalPit.blocks.BlocksRegistry;
 import charcoalPit.items.ItemsRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -23,6 +24,8 @@ public class PotteryKilnRecipe {
 		recipes.add(new PotteryKilnRecipe(new ItemStack(Items.CLAY_BALL), new ItemStack(Items.BRICK)));
 		recipes.add(new PotteryKilnRecipe(new ItemStack(Blocks.CLAY), new ItemStack(Blocks.HARDENED_CLAY)));
 		recipes.add(new PotteryKilnRecipe(new ItemStack(ItemsRegistry.clay_Pot), new ItemStack(Items.FLOWER_POT)));
+		
+		recipes.add(new PotteryKilnRecipe(new ItemStack(BlocksRegistry.clayPot), new ItemStack(BlocksRegistry.ceramicPot)));
 		
 		recipes.add(new PotteryKilnRecipe(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 0), new ItemStack(Blocks.WHITE_GLAZED_TERRACOTTA)));
 		recipes.add(new PotteryKilnRecipe(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, 1), new ItemStack(Blocks.ORANGE_GLAZED_TERRACOTTA)));

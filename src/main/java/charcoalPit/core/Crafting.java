@@ -54,6 +54,12 @@ public class Crafting {
 				"C C",
 				" C ",
 				'C', Items.CLAY_BALL
+		}).setRegistryName("clayFlowerPot"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), BlocksRegistry.clayPot, new Object[]{
+				"CCC",
+				"C C",
+				"CCC",
+				'C', Items.CLAY_BALL
 		}).setRegistryName("clayPot"));
 		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.fertilizer, 2), new Object[]{
 				Items.ROTTEN_FLESH,"dustAsh","dustAsh","dustAsh","dustAsh"

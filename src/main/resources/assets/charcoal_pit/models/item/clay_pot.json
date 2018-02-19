@@ -1,6 +1,3 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "charcoal_pit:items/clay_pot"
-    }
+    "parent": "charcoal_pit:block/clay_pot"
 }

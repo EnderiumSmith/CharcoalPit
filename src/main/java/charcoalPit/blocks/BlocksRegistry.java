@@ -12,6 +12,8 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlocksRegistry {
 	
@@ -25,16 +27,20 @@ public class BlocksRegistry {
 	public static BlockCreosoteCollector brickCollector=new BlockCreosoteCollector("brick_creosote_collector", true);
 	public static BlockCreosoteCollector netherCollector=new BlockCreosoteCollector("nether_creosote_collector", true);
 	public static BlockPotteryKiln potteryKiln=new BlockPotteryKiln("pottery_kiln");
+	public static BlockCeramicPot ceramicPot=new BlockCeramicPot();
+	public static BlockClayPot clayPot=new BlockClayPot();
 	
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event){
 		event.getRegistry().registerAll(logPile, cokeBlock, activeLogPile, activeCoalPile,
-				charcoalPile, cokePile, stoneCollector, brickCollector, netherCollector, potteryKiln);
+				charcoalPile, cokePile, stoneCollector, brickCollector, netherCollector, potteryKiln,
+				ceramicPot, clayPot);
 		if(FluidsRegistry.BlockCreosote!=null){
 			event.getRegistry().register(FluidsRegistry.BlockCreosote);
 		}
 	}
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public static void registerModels(ModelRegistryEvent event){
 		StateMapperBase mapper=new StateMapperBase() {
 			
