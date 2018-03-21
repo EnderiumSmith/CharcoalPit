@@ -6,14 +6,18 @@ import java.util.Map;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.blocks.BlocksRegistry;
+import charcoalPit.crafting.OreSmeltingRecipes;
 import charcoalPit.fluids.FluidsRegistry;
 import charcoalPit.gui.GUIHandler;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileActivePile;
 import charcoalPit.tile.TileCeramicPot;
+import charcoalPit.tile.TileClayPot;
 import charcoalPit.tile.TileCreosoteCollector;
 import charcoalPit.tile.TilePotteryKiln;
+import charcoalPit.tile.TileSmeltedPot;
 import net.minecraft.block.BlockDispenser;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -51,6 +55,8 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+"creosote_collector");
 		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+"pottery_kiln");
 		GameRegistry.registerTileEntity(TileCeramicPot.class, Constants.MODID+"ceramic_pot");
+		GameRegistry.registerTileEntity(TileClayPot.class, Constants.MODID+"clay_pot");
+		GameRegistry.registerTileEntity(TileSmeltedPot.class, Constants.MODID+"broken_pot");
 		
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
@@ -66,6 +72,7 @@ public class CommonProxy {
 		PotteryKilnRecipe.initCustomRecipes(Config.PotteryRecipes);
 		if(Config.RegisterRecipes)
 			Crafting.registerRecipes();
+		OreSmeltingRecipes.initSmeltingRecipes();
 	}
 	public void postInit(FMLPostInitializationEvent e){
 		if(Config.DisableFurnaceCharcoal){
@@ -78,10 +85,30 @@ public class CommonProxy {
 					continue;
 				int[] ids=OreDictionary.getOreIDs(input);
 				for(int id:ids){
-					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, charcoal)){
+					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, CommonProxy.charcoal)){
 						entries.remove();
 						break;
 					}
+				}
+			}
+		}
+		if(Config.DisableFurnaceOre){
+			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
+			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
+				Map.Entry<ItemStack,ItemStack> entry = entries.next();
+				ItemStack result = entry.getValue();
+				ItemStack input = entry.getKey();
+				if(input.isEmpty())
+					continue;
+				if(input.getItem()==Item.getItemFromBlock(Blocks.IRON_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.GOLD_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.COAL_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.DIAMOND_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.EMERALD_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.LAPIS_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.REDSTONE_ORE)||
+						input.getItem()==Item.getItemFromBlock(Blocks.QUARTZ_ORE)){
+					entries.remove();
 				}
 			}
 		}

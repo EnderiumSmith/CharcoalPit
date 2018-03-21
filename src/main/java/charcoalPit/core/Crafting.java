@@ -67,6 +67,68 @@ public class Crafting {
 		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.fertilizer, 2), new Object[]{
 				"dirt","dustAsh","dustAsh","dustAsh","dustAsh"
 		}).setRegistryName("fertilizer2"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.fire_starter), new Object[]{
+				" S",
+				"S ",
+				'S', Items.STICK
+		}).setRegistryName("fireStarter"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.thatch), new Object[]{
+				"SS",
+				"SS",
+				'S', ItemsRegistry.straw
+		}).setRegistryName("thatch"));
+		ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.straw, 4), new Object[]{
+				"T",
+				'T', BlocksRegistry.thatch
+		}).setRegistryName("straw"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[0]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeWhite"
+		}).setRegistryName("whitePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[1]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeOrange"
+		}).setRegistryName("orangePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[2]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeMagenta"
+		}).setRegistryName("magentaPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[3]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeLightBlue"
+		}).setRegistryName("lightBluePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[4]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeYellow"
+		}).setRegistryName("yellowPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[5]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeLime"
+		}).setRegistryName("limePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[6]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyePink"
+		}).setRegistryName("pinkPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[7]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeGray"
+		}).setRegistryName("grayPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[8]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeLightGray"
+		}).setRegistryName("silverPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[9]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeCyan"
+		}).setRegistryName("cyanPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[10]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyePurple"
+		}).setRegistryName("purplePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[11]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeBlue"
+		}).setRegistryName("bluePot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[12]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeBrown"
+		}).setRegistryName("brownPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[13]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeGreen"
+		}).setRegistryName("greenPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[14]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeRed"
+		}).setRegistryName("redPot"));
+		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[15]), new Object[]{
+				BlocksRegistry.ceramicPot, "dyeBlack"
+		}).setRegistryName("blackPot"));
 		if(Config.DismantleLogPiles){
 			ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.wood_stack.getItem(), 9, ItemsRegistry.wood_stack.getItemDamage()), new Object[]{
 				BlocksRegistry.logPile

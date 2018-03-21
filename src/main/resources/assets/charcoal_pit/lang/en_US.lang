@@ -5,12 +5,34 @@ tile.charcoal_pit:brick_creosote_collector.name=Brick Creosote Oil Funnel
 tile.charcoal_pit:nether_creosote_collector.name=Nether Brick Creosote Oil Funnel
 tile.charcoal_pit:ceramic_pot.name=Ceramic Vessel
 tile.charcoal_pit:clay_pot.name=Clay Vessel
+tile.charcoal_pit:broken_pot.name=Cracked Vessel
+tile.charcoal_pit:thatch.name=Thatch
+tile.charcoal_pit:white_dyed_pot.name=White Ceramic Vessel
+tile.charcoal_pit:orange_dyed_pot.name=Orange Ceramic Vessel
+tile.charcoal_pit:magenta_dyed_pot.name=Magenta Ceramic Vessel
+tile.charcoal_pit:light_blue_dyed_pot.name=Ligth Blue Ceramic Vessel
+tile.charcoal_pit:yellow_dyed_pot.name=Yellow Ceramic Vessel
+tile.charcoal_pit:lime_dyed_pot.name=Lime Ceramic Vessel
+tile.charcoal_pit:pink_dyed_pot.name=Pink Ceramic Vessel
+tile.charcoal_pit:gray_dyed_pot.name=Gray Ceramic Vessel
+tile.charcoal_pit:silver_dyed_pot.name=Light Gray Ceramic Vessel
+tile.charcoal_pit:cyan_dyed_pot.name=Cyan Ceramic Vessel
+tile.charcoal_pit:purple_dyed_pot.name=Purple Ceramic Vessel
+tile.charcoal_pit:blue_dyed_pot.name=Blue Ceramic Vessel
+tile.charcoal_pit:brown_dyed_pot.name=Brown Ceramic Vessel
+tile.charcoal_pit:green_dyed_pot.name=Green Ceramic Vessel
+tile.charcoal_pit:red_dyed_pot.name=Red Ceramic Vessel
+tile.charcoal_pit:black_dyed_pot.name=Black Ceramic Vessel
 
 item.charcoal_pit:item_coke.name=Coal Coke
 item.charcoal_pit:item_ash.name=Ash
 item.charcoal_pit:item_fertilizer.name=Fertilizer
 item.charcoal_pit:clay_flowerpot.name=Clay Flower Pot
 item.charcoal_pit:alchemical_coal.name=Alchemical Coal
+item.charcoal_pit:slag.name=Slag
+item.charcoal_pit:fire_starter.name=Fire Starter
+item.charcoal_pit:straw.name=Straw
+item.charcoal_pit:aeternalis_fuel.name=Aeternalis Fuel
 
 fluid.creosote=Creosote Oil
 

@@ -21,6 +21,13 @@ public class FuelRegistry implements IFuelHandler{
 		if(FluidRegistry.getFluidStack("creosote", 1000).isFluidStackIdentical(FluidStack.loadFluidStackFromNBT(fuel.getTagCompound()))){
 			return Config.CreosoteFuel;
 		}
+		if(fuel.getItem()==ItemsRegistry.straw)
+			return 50;
+		if(fuel.getItem()==Item.getItemFromBlock(BlocksRegistry.thatch))
+			return 200;
+		if(fuel.getItem()==ItemsRegistry.aeternalis_fuel){
+			return 200;
+		}
 		return 0;
 	}
 

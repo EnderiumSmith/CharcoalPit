@@ -28,8 +28,8 @@ public class BlockCeramicPot extends BlockBase implements ITileEntityProvider{
 	
 	public static final AxisAlignedBB AABB_POT=new AxisAlignedBB(2D/16D, 0D, 2D/16D, 14D/16D, 1D, 14D/16D);
 
-	public BlockCeramicPot() {
-		super(Material.ROCK, "ceramic_pot");
+	public BlockCeramicPot(String name) {
+		super(Material.ROCK, name);
 		setHardness(1.25F);
 		setCreativeTab(CreativeTabs.DECORATIONS);
 		setHarvestLevel("pickaxe", 0);
@@ -81,7 +81,7 @@ public class BlockCeramicPot extends BlockBase implements ITileEntityProvider{
             nbttagcompound.setTag("items", ((TileCeramicPot)tileentity).items.serializeNBT());
             itemstack.setTagCompound(nbttagcompound);
             spawnAsEntity(worldIn, pos, itemstack);
-            worldIn.updateComparatorOutputLevel(pos, state.getBlock());
+            //worldIn.updateComparatorOutputLevel(pos, state.getBlock());
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -94,7 +94,7 @@ public class BlockCeramicPot extends BlockBase implements ITileEntityProvider{
 			NBTTagCompound stacktag=stack.getTagCompound();
 			if(stacktag.hasKey("items")){
 				((TileCeramicPot)worldIn.getTileEntity(pos)).items.deserializeNBT(stacktag.getCompoundTag("items"));
-				worldIn.updateComparatorOutputLevel(pos, state.getBlock());
+				//worldIn.updateComparatorOutputLevel(pos, state.getBlock());
 			}
 		}
 	}
@@ -108,14 +108,11 @@ public class BlockCeramicPot extends BlockBase implements ITileEntityProvider{
             ItemStackHandler items=new ItemStackHandler(9);
             items.deserializeNBT(nbttagcompound.getCompoundTag("items"));
             int i = 0;
-            int j = 0;
             for (int k=0;k<items.getSlots();k++)
             {
                 ItemStack itemstack=items.getStackInSlot(i);
             	if (!itemstack.isEmpty())
                 {
-                    ++j;
-
                     if (i <= 9)
                     {
                         ++i;

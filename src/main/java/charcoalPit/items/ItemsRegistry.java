@@ -18,6 +18,10 @@ public class ItemsRegistry {
 	public static ItemFertilizer fertilizer=new ItemFertilizer("item_fertilizer");
 	public static ItemBase clay_Pot=new ItemBase("clay_flowerpot");
 	public static ItemBase magic_Coal=new ItemBase("alchemical_coal");
+	public static ItemBase slag=new ItemBase("slag");
+	public static ItemFireStarter fire_starter=new ItemFireStarter();
+	public static ItemBase straw=new ItemBase("straw");
+	public static ItemAeternalis aeternalis_fuel=new ItemAeternalis();
 	
 	public static ItemBlockBase logPile=new ItemBlockBase(BlocksRegistry.logPile);
 	public static ItemBlockBase cokeBlock=new ItemBlockBase(BlocksRegistry.cokeBlock);
@@ -26,6 +30,9 @@ public class ItemsRegistry {
 	public static ItemBlockBase netherCollector=new ItemBlockBase(BlocksRegistry.netherCollector);
 	public static ItemBlockBase ceramicPot=new ItemBlockBase(BlocksRegistry.ceramicPot);
 	public static ItemBlockBase clayPot=new ItemBlockBase(BlocksRegistry.clayPot);
+	public static ItemBlockBase brokenPot=new ItemBlockBase(BlocksRegistry.brokenPot);
+	public static ItemBlockBase[] dyedPot=new ItemBlockBase[16];
+	public static ItemBlockBase thatch=new ItemBlockBase(BlocksRegistry.thatch);
 	
 	public static ItemStack coke_stack;
 	public static ItemStack ash_stack;
@@ -35,19 +42,25 @@ public class ItemsRegistry {
 	static{
 		ceramicPot.setMaxStackSize(1);
 		clayPot.setMaxStackSize(1);
+		brokenPot.setMaxStackSize(1);
+		for(int i=0;i<16;i++){
+			dyedPot[i]=new ItemBlockBase(BlocksRegistry.dyedPot[i]);
+			dyedPot[i].setMaxStackSize(1);
+		}
 	}
 	
 	public static void initStacks(){
 		coke_stack=new ItemStack(coke);
 		ash_stack=new ItemStack(ash);
 		wood_stack=new ItemStack(Blocks.LOG);
-		thatch_stack=new ItemStack(Blocks.HAY_BLOCK);
+		thatch_stack=new ItemStack(ItemsRegistry.straw);
 	}
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event){
 		event.getRegistry().registerAll(coke, ash, fertilizer, clay_Pot, magic_Coal,
-				logPile, cokeBlock, stoneCollector, brickCollector, netherCollector,
-				ceramicPot, clayPot);
+				slag, fire_starter, straw, aeternalis_fuel, logPile, cokeBlock, stoneCollector, brickCollector, netherCollector,
+				ceramicPot, clayPot, brokenPot, thatch);
+		event.getRegistry().registerAll(dyedPot);
 	}
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
@@ -57,6 +70,10 @@ public class ItemsRegistry {
 		fertilizer.initModel();
 		clay_Pot.initModel();
 		magic_Coal.initModel();
+		slag.initModel();
+		fire_starter.initModel();
+		straw.initModel();
+		aeternalis_fuel.initModel();
 		
 		logPile.initModel();
 		cokeBlock.initModel();
@@ -65,9 +82,15 @@ public class ItemsRegistry {
 		netherCollector.initModel();
 		ceramicPot.initModel();
 		clayPot.initModel();
+		brokenPot.initModel();
+		thatch.initModel();
+		for(int i=0;i<16;i++){
+			dyedPot[i].initModel();
+		}
 	}
 	public static void initOreDict(){
 		OreDictionary.registerOre("fuelCoke", coke);
 		OreDictionary.registerOre("dustAsh", ash);
+		OreDictionary.registerOre("itemSlag", slag);
 	}
 }

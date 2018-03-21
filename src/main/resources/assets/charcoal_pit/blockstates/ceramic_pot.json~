@@ -1,5 +1,10 @@
 {
+    "forge_marker": 1,
     "variants": {
-        "normal": { "model": "charcoal_pit:log_pile" }
+        "normal": { 
+		"model": "charcoal_pit:ceramic_pot",
+		"textures": { 
+			"side":"minecraft:hardened_clay",
+			"top":"charcoal_pit:hardened_clay_top" } }
     }
 }

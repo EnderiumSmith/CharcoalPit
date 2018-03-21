@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -27,14 +28,24 @@ public class BlocksRegistry {
 	public static BlockCreosoteCollector brickCollector=new BlockCreosoteCollector("brick_creosote_collector", true);
 	public static BlockCreosoteCollector netherCollector=new BlockCreosoteCollector("nether_creosote_collector", true);
 	public static BlockPotteryKiln potteryKiln=new BlockPotteryKiln("pottery_kiln");
-	public static BlockCeramicPot ceramicPot=new BlockCeramicPot();
+	public static BlockCeramicPot ceramicPot=new BlockCeramicPot("ceramic_pot");
 	public static BlockClayPot clayPot=new BlockClayPot();
+	public static BlockSmeltedPot brokenPot=new BlockSmeltedPot();
+	public static BlockDyedPot[] dyedPot=new BlockDyedPot[16];
+	public static BlockThatch thatch=new BlockThatch();
+	
+	static{
+		for(int i=0;i<16;i++){
+			dyedPot[i]=new BlockDyedPot("dyed_pot", EnumDyeColor.byMetadata(i));
+		}
+	}
 	
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event){
 		event.getRegistry().registerAll(logPile, cokeBlock, activeLogPile, activeCoalPile,
 				charcoalPile, cokePile, stoneCollector, brickCollector, netherCollector, potteryKiln,
-				ceramicPot, clayPot);
+				ceramicPot, clayPot, brokenPot, thatch);
+		event.getRegistry().registerAll(dyedPot);
 		if(FluidsRegistry.BlockCreosote!=null){
 			event.getRegistry().register(FluidsRegistry.BlockCreosote);
 		}

@@ -1,20 +1,35 @@
 package charcoalPit.core;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import charcoalPit.blocks.BlockDyedPot;
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
+import charcoalPit.items.ItemBlockBase;
+import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TilePotteryKiln;
 import charcoalPit.blocks.BlocksRegistry;
+import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockDoublePlant.EnumPlantType;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 public class PileIgnitr {
 	
@@ -40,6 +55,22 @@ public class PileIgnitr {
 										break;
 									}
 								}
+								if(shouldIgnite==false)
+									for(int i=0;i<Config.CokeBlocksMeta.length;i=i+2){
+										String name=Config.CokeBlocksMeta[i];
+										String meta=Config.CokeBlocksMeta[i+1];
+										int m=0;
+										if(meta.equals("*"))
+											m=OreDictionary.WILDCARD_VALUE;
+										else
+											m=Integer.parseInt(meta);
+										if(event.getWorld().getBlockState(newpos).getBlock().getRegistryName().toString().equals(name)&&
+												(m==OreDictionary.WILDCARD_VALUE||
+												event.getWorld().getBlockState(newpos).getBlock().getMetaFromState(event.getWorld().getBlockState(newpos))==m)){
+											shouldIgnite=true;
+											break;
+										}
+									}
 							}
 						}
 					}
@@ -98,6 +129,84 @@ public class PileIgnitr {
 				}
 				event.setUseBlock(Result.DENY);
 				event.setUseItem(Result.DENY);
+			}
+		}
+	}
+	@SubscribeEvent
+	public void getStraw(HarvestDropsEvent event){
+		if(event.getHarvester()!=null){
+			if(event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHoe){
+				if(!event.isSilkTouching()){
+					if(event.getState().getBlock()==Blocks.TALLGRASS){
+						event.getDrops().add(new ItemStack(ItemsRegistry.straw));
+						event.getHarvester().getHeldItemMainhand().damageItem(1, event.getHarvester());
+					}else{
+						if(event.getState().getBlock()==Blocks.DOUBLE_PLANT&&
+								(event.getState().getValue(BlockDoublePlant.VARIANT)==EnumPlantType.GRASS||
+								event.getState().getValue(BlockDoublePlant.VARIANT)==EnumPlantType.FERN)){
+							event.getDrops().add(new ItemStack(ItemsRegistry.straw, 2));
+							event.getHarvester().getHeldItemMainhand().damageItem(1, event.getHarvester());
+						}
+					}
+				}
+			}
+		}
+	}
+	@SubscribeEvent
+	public void savePotInvenory(ItemCraftedEvent event){
+		if(event.crafting.getItem() instanceof ItemBlockBase&&((ItemBlockBase)event.crafting.getItem()).getBlock() instanceof BlockDyedPot){
+			for(int i=0;i<event.craftMatrix.getSizeInventory();i++){
+				if(event.craftMatrix.getStackInSlot(i).getItem()==ItemsRegistry.ceramicPot){
+					event.crafting.setTagCompound(event.craftMatrix.getStackInSlot(i).getTagCompound());
+					return;
+				}
+			}
+		}
+	}
+	@SubscribeEvent
+	public void removeSmelting(OreRegisterEvent event){
+		if(Config.DisableFurnaceCharcoal&&event.getName().equals("logWood")){
+			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
+			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
+				Map.Entry<ItemStack,ItemStack> entry = entries.next();
+				ItemStack result = entry.getValue();
+				ItemStack input = entry.getKey();
+				if(input.isEmpty())
+					continue;
+				int[] ids=OreDictionary.getOreIDs(input);
+				for(int id:ids){
+					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, CommonProxy.charcoal)){
+						entries.remove();
+						break;
+					}
+				}
+			}
+		}
+		if(Config.DisableFurnaceOre&&event.getName().startsWith("ore")){
+			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
+			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
+				Map.Entry<ItemStack,ItemStack> entry = entries.next();
+				ItemStack result = entry.getValue();
+				ItemStack input = entry.getKey();
+				if(input.isEmpty())
+					continue;
+				int[] ids=OreDictionary.getOreIDs(input);
+				for(int id:ids){
+					if(OreDictionary.getOreName(id).startsWith("ore")){
+						int[] ids2=OreDictionary.getOreIDs(result);
+						boolean ok=false;
+						for(int id2:ids2){
+							if(OreDictionary.getOreName(id2).startsWith("ingot")){
+								entries.remove();
+								ok=true;
+								break;
+							}
+						}
+						if(ok){
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

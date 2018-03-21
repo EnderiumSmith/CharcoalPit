@@ -3,11 +3,15 @@ package charcoalPit.core;
 import java.util.ArrayList;
 
 import charcoalPit.blocks.BlocksRegistry;
+import charcoalPit.crafting.OreSmeltingRecipes;
 import charcoalPit.items.ItemsRegistry;
+import charcoalPit.tile.TileClayPot.ClayPotItemHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class PotteryKilnRecipe {
@@ -61,6 +65,29 @@ public class PotteryKilnRecipe {
 	public static boolean isValidInput(ItemStack stack){
 		if(stack.isEmpty())
 			return false;
+		if(stack.isItemEqual(new ItemStack(BlocksRegistry.clayPot))){
+			if(stack.hasTagCompound()){
+				NBTTagCompound tag=stack.getTagCompound();
+				if(tag.hasKey("items")){
+					ClayPotItemHandler items=new ClayPotItemHandler();
+					items.deserializeNBT(tag.getCompoundTag("items"));
+					boolean isEmpty=true;
+					for(int i =0;i<12;i++){
+						if(!items.getStackInSlot(i).isEmpty()){
+							isEmpty=false;
+							break;
+						}
+					}
+					if(!isEmpty){
+						if(OreSmeltingRecipes.oreKilnGetOutput(tag)!=ItemStack.EMPTY&&
+								OreSmeltingRecipes.oreKilnGetFuelAvailable(tag)>=OreSmeltingRecipes.oreKilnGetFuelRequired(tag)){
+							return true;
+						}
+						return false;
+					}
+				}
+			}
+		}
 		for(int i=0;i<recipes.size();i++){
 			if(OreDictionary.itemMatches(stack, recipes.get(i).input, false))
 				return true;
@@ -70,6 +97,35 @@ public class PotteryKilnRecipe {
 	public static ItemStack getResult(ItemStack in){
 		if(in.isEmpty())
 			return ItemStack.EMPTY;
+		if(in.isItemEqual(new ItemStack(BlocksRegistry.clayPot))){
+			if(in.hasTagCompound()){
+				NBTTagCompound tag=in.getTagCompound();
+				if(tag.hasKey("items")){
+					ClayPotItemHandler items=new ClayPotItemHandler();
+					items.deserializeNBT(tag.getCompoundTag("items"));
+					boolean isEmpty=true;
+					for(int i =0;i<12;i++){
+						if(!items.getStackInSlot(i).isEmpty()){
+							isEmpty=false;
+							break;
+						}
+					}
+					if(!isEmpty){
+						ItemStackHandler ingots=new ItemStackHandler(1);
+						ingots.setStackInSlot(0, OreSmeltingRecipes.oreKilnGetOutput(tag));
+						int slag=OreSmeltingRecipes.oreKilnGetFuelRequired(tag);
+						ItemStack result=new ItemStack(BlocksRegistry.brokenPot);
+						NBTTagCompound tag2=new NBTTagCompound();
+						tag2.setTag("items", ingots.serializeNBT());
+						if(slag>0){
+							tag2.setInteger("slag", slag);
+						}
+						result.setTagCompound(tag2);
+						return result;
+					}
+				}
+			}
+		}
 		for(int i=0;i<recipes.size();i++){
 			if(OreDictionary.itemMatches(in, recipes.get(i).input, false)){
 				return recipes.get(i).output.copy();

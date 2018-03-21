@@ -1,5 +1,5 @@
 {
-    "parent": "block/kiln_slab",
+    "parent": "charcoal_pit:block/kiln_slab",
     "textures": {
         "side": "blocks/hay_block_top"
     }

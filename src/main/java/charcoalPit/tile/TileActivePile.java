@@ -10,6 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class TileActivePile extends TileEntity implements ITickable{
 
@@ -96,6 +97,20 @@ public class TileActivePile extends TileEntity implements ITickable{
 			}else{
 				for(String name:Config.CokeBlocks){
 					if(block.getBlock().getRegistryName().toString().equals(name)){
+						return true;
+					}
+				}
+				for(int i=0;i<Config.CokeBlocksMeta.length;i=i+2){
+					String name=Config.CokeBlocksMeta[i];
+					String meta=Config.CokeBlocksMeta[i+1];
+					int m=0;
+					if(meta.equals("*"))
+						m=OreDictionary.WILDCARD_VALUE;
+					else
+						m=Integer.parseInt(meta);
+					if(block.getBlock().getRegistryName().toString().equals(name)&&
+							(m==OreDictionary.WILDCARD_VALUE||
+									block.getBlock().getMetaFromState(block)==m)){
 						return true;
 					}
 				}
