@@ -3,11 +3,36 @@ tile.charcoal_pit:block_coke.name=Kohlekoksblock
 tile.charcoal_pit:stone_creosote_collector.name=Steinziegel-Kreosotöl-Trichter
 tile.charcoal_pit:brick_creosote_collector.name=Ziegelstein-Kreosotöl-Trichter
 tile.charcoal_pit:nether_creosote_collector.name=Netherziegel-Kreosotöl-Trichter
+tile.charcoal_pit:ceramic_pot.name=Keramikgefäß
+tile.charcoal_pit:clay_pot.name=Lehmgefäß
+tile.charcoal_pit:broken_pot.name=Rissiges Gefäß
+tile.charcoal_pit:thatch.name=Dachstroh
+tile.charcoal_pit:white_dyed_pot.name=Weißes Keramikgefäß
+tile.charcoal_pit:orange_dyed_pot.name=Oranges Keramikgefäß
+tile.charcoal_pit:magenta_dyed_pot.name=Magenta Keramikgefäß
+tile.charcoal_pit:light_blue_dyed_pot.name=Hellblaues Keramikgefäß
+tile.charcoal_pit:yellow_dyed_pot.name=Gelbes Keramikgefäß
+tile.charcoal_pit:lime_dyed_pot.name=Hellgrünes Keramikgefäß
+tile.charcoal_pit:pink_dyed_pot.name=Rosa Keramikgefäß
+tile.charcoal_pit:gray_dyed_pot.name=Graues Keramikgefäß
+tile.charcoal_pit:silver_dyed_pot.name=Hellgraues Keramikgefäß
+tile.charcoal_pit:cyan_dyed_pot.name=Türkises Keramikgefäß
+tile.charcoal_pit:purple_dyed_pot.name=Violettes Keramikgefäß
+tile.charcoal_pit:blue_dyed_pot.name=Blaues Keramikgefäß
+tile.charcoal_pit:brown_dyed_pot.name=Braunes Keramikgefäß
+tile.charcoal_pit:green_dyed_pot.name=Grünes Keramikgefäß
+tile.charcoal_pit:red_dyed_pot.name=Rotes Keramikgefäß
+tile.charcoal_pit:black_dyed_pot.name=Schwarzes Keramikgefäß
 
 item.charcoal_pit:item_coke.name=Kohlekoks
 item.charcoal_pit:item_ash.name=Asche
 item.charcoal_pit:item_fertilizer.name=Dünger
-item.charcoal_pit:clay_pot.name=Lehmtopf
+item.charcoal_pit:clay_flowerpot.name=Lehmblumentopf
+item.charcoal_pit:alchemical_coal.name=Alchemistische Kohle
+item.charcoal_pit:slag.name=Schlacke
+item.charcoal_pit:fire_starter.name=Feuerbohrzeug
+item.charcoal_pit:straw.name=Stroh
+item.charcoal_pit:aeternalis_fuel.name=Aeternalis-Treibstoff
 
 fluid.creosote=Kreosotöl
 
@@ -15,3 +40,9 @@ potion.effect.coke_cola=Trank der Koks-Cola
 splash_potion.effect.coke_cola=Werfbarer Trank der Koks-Cola
 lingering_potion.effect.coke_cola=Verweilender Trank der Koks-Cola
 tipped_arrow.effect.coke_cola=Pfeil der Koks-Cola
+
+jei.charcoal_pit.name=Um eine Holzkohlegrube zu bauen, musst du Holzstapel in einer beliebigen Form platzieren und dann alle freiliegenden Stapel mit nicht brennbaren festen Blöcken bedecken.\nUm den Anfang zu machen, zünde einen der Holzstapel an und bedecke ihn schnell. Es funktioniert, wenn du oben Rauchpartikel siehst. Kreosotöl kann während des Prozesses mit Kreosotöl-Trichtern gesammelt werden.\nWenn die Struktur ungültig ist, werden die Holzstapel wie normale Blöcke brennen und sich das Feuer auf benachbarte Stapel ausweiten.\nNach einer Weile (standardmäßig 18 MC-Stunden) hört die Grube auf zu rauchen und die Holzstapel werden sich in einen nach Asche aussehenden Block verwandeln. Wenn du diesen Block abbaust, entstehen Holzkohle und Asche im Verhältnis von 1:1 (standardmäßig). Glück kann verwendet werden, um den Kohleertrag zu verbessern.\nKreosotöl kann während des Prozesses mithilfe von Kreosotöl-Trichtern gewonnen werden.
+
+jei.coke_oven.name=Um einen Koksofen zu bauen, platziere Kohleblöcke in einer beliebigen Form und bedecke alle freiliegenden Blöcke mit nichtbrennbaren festen Blöcken, die als feuerfeste Materialien gelten (standardmäßig Ziegel und Netherziegel).\nUm den Anfang zu machen, setze einen der Kohleblöcke in Brand und bedecke ihn schnell. Es funktioniert, wenn du oben Rauchpartikel siehst. Kreosotöl kann während des Prozesses mit Kreosotöl-Trichtern gesammelt werden.\nWenn die Struktur ungültig ist, werden die Kohlenblöcke wie normale Blöcke brennen und sich das Feuer auf benachbarte Kohlen ausweiten.\nNach einer Weile (standardmäßig 36 MC-Stunden) hört der Ofen auf zu rauchen und die Kohleblöcke verwandeln sich zu einem nach Asche aussehenden Block. Wenn du diesen Block abbaust, entstehen Kohlekoks und Asche im Verhältnis von 4:1 (standardmäßig). Glück kann verwendet werden, um den Kohleertrag zu verbessern.
+
+jei.pottery_kiln.name=Um einen Töpferofen zu bauen, klicke mit einem Inhaltsstoff und der rechten Maustaste auf die Oberseite eines festen Blocks. Der Inhaltsstoff wird auf den Boden gelegt und bildet einen Ofen. Dann bedecke den Ofen (standardmäßig) mit einem Strohballen und 3 Holzstämmen.\nDer Ofen muss auf allen Seiten mit festen Blöcken bedeckt sein, mit Ausnahme der Oberseite, welche frei sein muss. Wenn du fertig bist, zünde das Feuer auf der Oberseite an und warte. Wenn die Struktur ungültig ist oder es am Feuer regnet, wird es ausgehen.\nNach einiger Zeit (standardmäßig 8 MC-Stunden) verwandelt sich der Ofen zu einem nach Asche aussehenden Block. Grabe ihn aus, um Keramik und etwas Asche zu erhalten.\nEin Spender kann ebenfalls den Ofen bauen. Wenn du den Block unter dem Ofen entfernst, wird er zerstört.
