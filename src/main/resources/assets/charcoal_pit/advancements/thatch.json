@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:thatch"
+        },
+        "title": {
+            "translate": "advancements.thatch.title"
+        },
+        "description": {
+            "translate": "advancements.thatch.description"
+        }
+    },
+    "parent": "charcoal_pit:straw",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:thatch"
+                    }
+                ]
+            }
+        }
+    }
+}

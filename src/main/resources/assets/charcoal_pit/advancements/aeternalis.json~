@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:aeternalis_fuel"
+        },
+        "title": {
+            "translate": "advancements.aeternalis.title"
+        },
+        "description": {
+            "translate": "advancements.aeternalis.description"
+        },
+	"frame":"challenge"
+    },
+    "parent": "charcoal_pit:root",
+    "rewards": {
+        "experience": 500
+    },
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:aeternalis_fuel"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -33,6 +33,10 @@ public class BlocksRegistry {
 	public static BlockSmeltedPot brokenPot=new BlockSmeltedPot();
 	public static BlockDyedPot[] dyedPot=new BlockDyedPot[16];
 	public static BlockThatch thatch=new BlockThatch();
+	public static BlockBloomeryHatch hatch=new BlockBloomeryHatch();
+	public static BlockBronzeReinforcedBrick reinforcedBrick=new BlockBronzeReinforcedBrick();
+	public static BlockBloomeryOreLayer oreLayer=new BlockBloomeryOreLayer();
+	public static BlockBloom bloom=new BlockBloom();
 	
 	static{
 		for(int i=0;i<16;i++){
@@ -44,7 +48,7 @@ public class BlocksRegistry {
 	public static void registerBlocks(RegistryEvent.Register<Block> event){
 		event.getRegistry().registerAll(logPile, cokeBlock, activeLogPile, activeCoalPile,
 				charcoalPile, cokePile, stoneCollector, brickCollector, netherCollector, potteryKiln,
-				ceramicPot, clayPot, brokenPot, thatch);
+				ceramicPot, clayPot, brokenPot, thatch, hatch, reinforcedBrick, oreLayer, bloom);
 		event.getRegistry().registerAll(dyedPot);
 		if(FluidsRegistry.BlockCreosote!=null){
 			event.getRegistry().register(FluidsRegistry.BlockCreosote);

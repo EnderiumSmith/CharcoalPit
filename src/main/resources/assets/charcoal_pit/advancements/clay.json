@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:clay_ball"
+        },
+        "title": {
+            "translate": "advancements.clay.title"
+        },
+        "description": {
+            "translate": "advancements.clay.description"
+        }
+    },
+    "parent": "charcoal_pit:root",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:clay_ball"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -2,6 +2,7 @@ package charcoalPit.tile;
 
 import charcoalPit.blocks.BlocksRegistry;
 import charcoalPit.core.Config;
+import charcoalPit.core.MethodHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +11,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class TileActivePile extends TileEntity implements ITickable{
 
@@ -61,10 +61,7 @@ public class TileActivePile extends TileEntity implements ITickable{
 			EnumFacing[] neighbors=EnumFacing.VALUES;
 			//check structure
 			for(EnumFacing facing:neighbors){
-				IBlockState block=this.world.getBlockState(this.pos.offset(facing));
-				if((!isValidBlock(block))||
-						(!block.isSideSolid(this.world, this.pos.offset(facing), facing.getOpposite()))||
-						block.getBlock().isFlammable(this.world, this.pos.offset(facing), facing.getOpposite())){
+				if(!MethodHelper.CharcoalPitIsValidBlock(world, this.pos, facing, isCoke)){
 					valid=false;
 					break;
 				}
@@ -88,36 +85,6 @@ public class TileActivePile extends TileEntity implements ITickable{
 				}
 			}
 		}
-	}
-	public boolean isValidBlock(IBlockState block){
-		if(isCoke){
-			if(block.getBlock()==BlocksRegistry.activeCoalPile||block.getBlock()==BlocksRegistry.brickCollector||
-					block.getBlock()==BlocksRegistry.netherCollector||block.getBlock()==BlocksRegistry.cokePile){
-				return true;
-			}else{
-				for(String name:Config.CokeBlocks){
-					if(block.getBlock().getRegistryName().toString().equals(name)){
-						return true;
-					}
-				}
-				for(int i=0;i<Config.CokeBlocksMeta.length;i=i+2){
-					String name=Config.CokeBlocksMeta[i];
-					String meta=Config.CokeBlocksMeta[i+1];
-					int m=0;
-					if(meta.equals("*"))
-						m=OreDictionary.WILDCARD_VALUE;
-					else
-						m=Integer.parseInt(meta);
-					if(block.getBlock().getRegistryName().toString().equals(name)&&
-							(m==OreDictionary.WILDCARD_VALUE||
-									block.getBlock().getMetaFromState(block)==m)){
-						return true;
-					}
-				}
-				return false;
-			}
-		}else
-			return true;
 	}
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {

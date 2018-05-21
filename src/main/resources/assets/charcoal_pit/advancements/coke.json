@@ -1,0 +1,37 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:item_coke"
+        },
+        "title": {
+            "translate": "advancements.coke.title"
+        },
+        "description": {
+            "translate": "advancements.coke.description"
+        },
+	"frame":"goal"
+    },
+    "parent": "charcoal_pit:coal",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:item_coke"
+                    }
+                ]
+            }
+        },
+	"raw": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:coal_block"
+                    }
+                ]
+            }
+        }
+    }
+}

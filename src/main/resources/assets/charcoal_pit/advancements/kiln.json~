@@ -1,0 +1,87 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:brick"
+        },
+        "title": {
+            "translate": "advancements.klin.title"
+        },
+        "description": {
+            "translate": "advancements.kiln.description"
+        }
+    },
+    "parent": "charcoal_pit:clay",
+    "criteria": {
+        "straw": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:straw"
+                    }
+                ]
+            }
+        },
+	"brick": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:brick"
+                    }
+                ]
+            }
+        },
+	"hard_clay": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:hardened_clay"
+                    }
+                ]
+            }
+        },
+	"stain_clay": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:stained_hardened_clay"
+                    }
+                ]
+            }
+        },
+	"flower": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:flower_pot"
+                    }
+                ]
+            }
+        },
+	"ceramic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:ceramic_pot"
+                    }
+                ]
+            }
+        },
+	"broken": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:broken_pot"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements":[["straw"],["brick","hard_clay","stain_clay","flower","ceramic","broken"]]
+}

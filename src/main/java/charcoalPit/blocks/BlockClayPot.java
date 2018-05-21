@@ -114,7 +114,7 @@ public class BlockClayPot extends BlockBase implements ITileEntityProvider{
 					if(OreSmeltingRecipes.oreKilnIsEmpty(stacktag)){
 						tooltip.add("Empty");
 					}else{
-						tooltip.add(ChatFormatting.DARK_RED+"Invalid"+" ("+OreSmeltingRecipes.oreKilnGetOreAmount(stacktag)+"/9)");
+						tooltip.add(ChatFormatting.DARK_RED+"Invalid"+" ("+OreSmeltingRecipes.oreKilnGetOreAmount(stacktag)+"/8)");
 					}
 				}else{
 					int t=OreSmeltingRecipes.oreKilnGetMaxSpace(output);

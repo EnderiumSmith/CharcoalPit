@@ -55,7 +55,7 @@ public class FilteredItemHandler extends ItemStackHandler{
         if(canInsert(slot)&&isItemValid(slot, stack)){
         	return super.insertItem(slot, stack, simulate);
         }else{
-        	return ItemStack.EMPTY;
+        	return stack;
         }
     }
 

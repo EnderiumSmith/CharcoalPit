@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:coal"
+        },
+        "title": {
+            "translate": "advancements.coal.title"
+        },
+        "description": {
+            "translate": "advancements.coal.description"
+        }
+    },
+    "parent": "charcoal_pit:kiln",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:coal_block"
+                    }
+                ]
+            }
+        }
+    }
+}

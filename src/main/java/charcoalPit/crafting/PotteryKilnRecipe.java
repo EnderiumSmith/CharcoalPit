@@ -1,9 +1,8 @@
-package charcoalPit.core;
+package charcoalPit.crafting;
 
 import java.util.ArrayList;
 
 import charcoalPit.blocks.BlocksRegistry;
-import charcoalPit.crafting.OreSmeltingRecipes;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileClayPot.ClayPotItemHandler;
 import net.minecraft.init.Blocks;
@@ -72,7 +71,7 @@ public class PotteryKilnRecipe {
 					ClayPotItemHandler items=new ClayPotItemHandler();
 					items.deserializeNBT(tag.getCompoundTag("items"));
 					boolean isEmpty=true;
-					for(int i =0;i<12;i++){
+					for(int i =0;i<5;i++){
 						if(!items.getStackInSlot(i).isEmpty()){
 							isEmpty=false;
 							break;
@@ -104,7 +103,7 @@ public class PotteryKilnRecipe {
 					ClayPotItemHandler items=new ClayPotItemHandler();
 					items.deserializeNBT(tag.getCompoundTag("items"));
 					boolean isEmpty=true;
-					for(int i =0;i<12;i++){
+					for(int i=0;i<5;i++){
 						if(!items.getStackInSlot(i).isEmpty()){
 							isEmpty=false;
 							break;

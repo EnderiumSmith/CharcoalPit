@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:clay_pot"
+        },
+        "title": {
+            "translate": "advancements.clay_pot.title"
+        },
+        "description": {
+            "translate": "advancements.clay_pot.description"
+        }
+    },
+    "parent": "charcoal_pit:clay",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:clay_pot"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:stone_creosote_collector"
+        },
+        "title": {
+            "translate": "advancements.funnel.title"
+        },
+        "description": {
+            "translate": "advancements.funnel.description"
+        }
+    },
+    "parent": "charcoal_pit:bloomery_hatch",
+    "criteria": {
+        "stone": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:stone_creosote_collector"
+                    }
+                ]
+            }
+        },
+	"brick": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:brick_creosote_collector"
+                    }
+                ]
+            }
+        },
+	"nether": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:nether_creosote_collector"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements":[["stone","brick","nether"]]
+}

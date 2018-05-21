@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:broken_pot"
+        },
+        "title": {
+            "translate": "advancements.ore.title"
+        },
+        "description": {
+            "translate": "advancements.ore.description"
+        }
+    },
+    "parent": "charcoal_pit:kiln",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:broken_pot"
+                    }
+                ]
+            }
+        }
+    }
+}

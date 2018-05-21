@@ -1,7 +1,8 @@
 package charcoalPit.blocks;
 
 import charcoalPit.core.Config;
-import charcoalPit.core.PotteryKilnRecipe;
+import charcoalPit.core.MethodHelper;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.Block;
@@ -16,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -172,7 +172,7 @@ public class BlockPotteryKiln extends BlockBase implements ITileEntityProvider{
 	}
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TilePotteryKiln)worldIn.getTileEntity(pos)).pottery.getStackInSlot(0));
+		((TilePotteryKiln)worldIn.getTileEntity(pos)).dropInventory();
 		super.breakBlock(worldIn, pos, state);
 	}
 	@Override
@@ -212,7 +212,7 @@ public class BlockPotteryKiln extends BlockBase implements ITileEntityProvider{
 						return true;
 					}
 				}else{
-					if(!playerIn.getHeldItem(hand).isEmpty()&&ItemStack.areItemsEqual(playerIn.getHeldItem(hand),ItemsRegistry.thatch_stack)&&playerIn.getHeldItem(hand).getCount()>=Config.ThatchAmount){
+					if(!playerIn.getHeldItem(hand).isEmpty()&&MethodHelper.PotteryKilnIsTatch(playerIn.getHeldItem(hand))&&playerIn.getHeldItem(hand).getCount()>=Config.ThatchAmount){
 						if(worldIn.isRemote){
 							return true;
 						}else{

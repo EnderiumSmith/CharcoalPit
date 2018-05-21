@@ -2,6 +2,10 @@ package charcoalPit.items;
 
 import java.util.List;
 
+import charcoalPit.blocks.BlockBloomeryHatch;
+import charcoalPit.blocks.BlocksRegistry;
+import charcoalPit.crafting.OreSmeltingRecipes;
+import charcoalPit.tile.TileBloomery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,11 +61,25 @@ public class ItemFireStarter extends ItemBase{
 		if(!player.world.isRemote){
 			if(trace.typeOfHit==RayTraceResult.Type.BLOCK){
 				if(count==1){
-					BlockPos hit=trace.getBlockPos().offset(trace.sideHit);
-					if(player.world.getBlockState(hit).getBlock().isReplaceable(player.world, hit)){
-						player.world.setBlockState(hit, Blocks.FIRE.getDefaultState());
-						player.world.playSound(null, hit, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-						stack.shrink(1);
+					if(player.world.getBlockState(trace.getBlockPos()).getBlock()==BlocksRegistry.hatch){
+						if(player.world.getBlockState(trace.getBlockPos()).getValue(BlockBloomeryHatch.ACTIVE)==false&&
+								player.world.getBlockState(trace.getBlockPos()).getValue(BlockBloomeryHatch.OPEN)==false){
+							TileBloomery bloomery=(TileBloomery)player.world.getTileEntity(trace.getBlockPos());
+							if(!OreSmeltingRecipes.BloomeryGetOutput(bloomery).isEmpty()&&
+									bloomery.getFuelAmount()>=OreSmeltingRecipes.BloomeryGetFuelRequired(bloomery)){
+										player.world.setBlockState(trace.getBlockPos(), player.world.getBlockState(trace.getBlockPos()).withProperty(BlockBloomeryHatch.ACTIVE, true));
+										bloomery.ignite();
+										player.world.playSound(null, trace.getBlockPos(), SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+										stack.shrink(1);
+									}
+						}
+					}else{
+						BlockPos hit=trace.getBlockPos().offset(trace.sideHit);
+						if(player.world.getBlockState(hit).getBlock().isReplaceable(player.world, hit)){
+							player.world.setBlockState(hit, Blocks.FIRE.getDefaultState());
+							player.world.playSound(null, hit, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+							stack.shrink(1);
+						}
 					}
 				}
 			}else{

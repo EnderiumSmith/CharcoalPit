@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:ceramic_pot"
+        },
+        "title": {
+            "translate": "advancements.ceramic.title"
+        },
+        "description": {
+            "translate": "advancements.ceramic.description"
+        }
+    },
+    "parent": "charcoal_pit:clay_vessel",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:ceramic_pot"
+                    }
+                ]
+            }
+        }
+    }
+}

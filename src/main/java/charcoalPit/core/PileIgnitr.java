@@ -3,11 +3,15 @@ package charcoalPit.core;
 import java.util.Iterator;
 import java.util.Map;
 
+import charcoalPit.blocks.BlockBloomeryHatch;
 import charcoalPit.blocks.BlockDyedPot;
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
+import charcoalPit.crafting.OreSmeltingRecipes;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import charcoalPit.items.ItemBlockBase;
 import charcoalPit.items.ItemsRegistry;
+import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TilePotteryKiln;
 import charcoalPit.blocks.BlocksRegistry;
 import net.minecraft.block.BlockDoublePlant;
@@ -17,6 +21,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -49,28 +54,10 @@ public class PileIgnitr {
 						for(int y=-1;y<=1;y++){
 							for(int z=-1;z<=1&&!shouldIgnite;z++){
 								BlockPos newpos=pos.add(x, y, z);
-								for(String name:Config.CokeBlocks){
-									if(event.getWorld().getBlockState(newpos).getBlock().getRegistryName().toString().equals(name)){
-										shouldIgnite=true;
-										break;
-									}
+								if(MethodHelper.CokeOvenIsValidBlock(event.getWorld().getBlockState(newpos))){
+									shouldIgnite=true;
+									break;
 								}
-								if(shouldIgnite==false)
-									for(int i=0;i<Config.CokeBlocksMeta.length;i=i+2){
-										String name=Config.CokeBlocksMeta[i];
-										String meta=Config.CokeBlocksMeta[i+1];
-										int m=0;
-										if(meta.equals("*"))
-											m=OreDictionary.WILDCARD_VALUE;
-										else
-											m=Integer.parseInt(meta);
-										if(event.getWorld().getBlockState(newpos).getBlock().getRegistryName().toString().equals(name)&&
-												(m==OreDictionary.WILDCARD_VALUE||
-												event.getWorld().getBlockState(newpos).getBlock().getMetaFromState(event.getWorld().getBlockState(newpos))==m)){
-											shouldIgnite=true;
-											break;
-										}
-									}
 							}
 						}
 					}
@@ -81,6 +68,9 @@ public class PileIgnitr {
 				}else if(facing==EnumFacing.DOWN&&event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.potteryKiln){
 					//found pottery kiln to ignite
 					ignitePottery(event.getWorld(), pos);
+				}else if(event.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.hatch){
+					//found bloomery to ignite
+					igniteBloomery(event.getWorld(), pos);
 				}
 			}
 		}
@@ -108,8 +98,23 @@ public class PileIgnitr {
 				((EnumKilnTypes)world.getBlockState(pos).getValue(BlockPotteryKiln.TYPE))==EnumKilnTypes.WOOD){
 			world.setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.ACTIVE));
 			((TilePotteryKiln)world.getTileEntity(pos)).setActive(true);
-			for(EnumFacing facing:EnumFacing.HORIZONTALS){
-				ignitePottery(world, pos.offset(facing));
+			for(int x=-1;x<2;x++){
+				for(int z=-1;z<2;z++){
+					ignitePottery(world, new BlockPos(pos.getX()+x, pos.getY(), pos.getZ()+z));
+				}
+			}
+		}
+	}
+	public void igniteBloomery(World world, BlockPos pos){
+		TileEntity tile=world.getTileEntity(pos);
+		if(tile instanceof TileBloomery){
+			TileBloomery bloomery=(TileBloomery)tile;
+			if(world.getBlockState(pos).getValue(BlockBloomeryHatch.ACTIVE)==false&&
+					world.getBlockState(pos).getValue(BlockBloomeryHatch.OPEN)==false&&
+					!OreSmeltingRecipes.BloomeryGetOutput(bloomery).isEmpty()&&
+					bloomery.getFuelAmount()>=OreSmeltingRecipes.BloomeryGetFuelRequired(bloomery)){
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBloomeryHatch.ACTIVE, true));
+				bloomery.ignite();
 			}
 		}
 	}
@@ -135,7 +140,8 @@ public class PileIgnitr {
 	@SubscribeEvent
 	public void getStraw(HarvestDropsEvent event){
 		if(event.getHarvester()!=null){
-			if(event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHoe){
+			if(event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHoe||
+					MethodHelper.isHoe(event.getHarvester().getHeldItemMainhand())){
 				if(!event.isSilkTouching()){
 					if(event.getState().getBlock()==Blocks.TALLGRASS){
 						event.getDrops().add(new ItemStack(ItemsRegistry.straw));

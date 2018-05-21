@@ -1,0 +1,59 @@
+{
+    "display": {
+        "icon": {
+            "item": "forge:bucketfilled",
+	    "nbt":"{FluidName:creosote,Amount:1000}"
+        },
+        "title": {
+            "translate": "advancements.creosote.title"
+        },
+        "description": {
+            "translate": "advancements.creosote.description"
+        },
+	"frame":"goal"
+    },
+    "parent": "charcoal_pit:funnel",
+    "criteria": {
+        "fluid": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "nbt":"{FluidName:creosote}"
+                    }
+                ]
+            }
+        },
+	"stone": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:stone_creosote_collector"
+                    }
+                ]
+            }
+        },
+	"brick": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:brick_creosote_collector"
+                    }
+                ]
+            }
+        },
+	"nether": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:nether_creosote_collector"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements":[["fluid"],["stone","brick","nether"]]
+}

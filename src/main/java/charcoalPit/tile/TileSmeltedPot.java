@@ -1,9 +1,11 @@
 package charcoalPit.tile;
 
+import java.util.Random;
+
+import charcoalPit.core.Config;
 import charcoalPit.items.ItemsRegistry;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.ItemStackHandler;
@@ -20,7 +22,14 @@ public class TileSmeltedPot extends TileEntity{
 	public void dropInventory(){
 		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), items.getStackInSlot(0));
 		if(slag>0){
-			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ItemsRegistry.slag, slag));
+			for(int i=0;i<slag;i++){
+				Random r=new Random();
+				if(r.nextFloat()<Config.KilnSlagChance){
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ItemsRegistry.rich_slag_stack.copy());
+				}else{
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ItemsRegistry.slag_stack.copy());
+				}
+			}
 			while(slag>0){
 				int i=EntityXPOrb.getXPSplit(slag);
 				slag-=i;

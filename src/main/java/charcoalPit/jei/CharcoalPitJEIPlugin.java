@@ -3,7 +3,7 @@ package charcoalPit.jei;
 import java.util.ArrayList;
 
 import charcoalPit.blocks.BlocksRegistry;
-import charcoalPit.core.PotteryKilnRecipe;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import charcoalPit.items.ItemsRegistry;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;

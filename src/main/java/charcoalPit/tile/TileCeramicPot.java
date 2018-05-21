@@ -1,20 +1,25 @@
 package charcoalPit.tile;
 
+import charcoalPit.blocks.BlockCeramicPot;
+import charcoalPit.core.FilteredItemHandler;
+import charcoalPit.core.MethodHelper;
+import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class TileCeramicPot extends TileEntity{
 	
 	@CapabilityInject(IItemHandler.class)
 	public static Capability<IItemHandler> ITEM=null;
-	public ItemStackHandler items;
+	public CeramicItemHandler items;
 	public TileCeramicPot() {
-		items=new ItemStackHandler(9);
+		items=new CeramicItemHandler(9);
 	}
 	
 	@Override
@@ -45,5 +50,24 @@ public class TileCeramicPot extends TileEntity{
 			return (T) items;
 		}
 		return super.getCapability(capability, facing);
+	}
+	
+	public static class CeramicItemHandler extends FilteredItemHandler{
+		
+		public CeramicItemHandler(int size) {
+			super(size);
+		}
+		
+		@Override
+		public boolean isItemValid(int slot, ItemStack stack) {
+			if(stack.getItem() instanceof ItemBlock){
+				if(((ItemBlock)stack.getItem()).getBlock() instanceof BlockCeramicPot||
+						((ItemBlock)stack.getItem()).getBlock() instanceof BlockShulkerBox){
+					return false;
+				}
+			}
+			return !MethodHelper.isItemBlackListed(stack);
+		}
+		
 	}
 }

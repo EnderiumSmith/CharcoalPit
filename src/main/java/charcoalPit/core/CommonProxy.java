@@ -6,11 +6,15 @@ import java.util.Map;
 
 import charcoalPit.CharcoalPit;
 import charcoalPit.blocks.BlocksRegistry;
+import charcoalPit.crafting.Crafting;
 import charcoalPit.crafting.OreSmeltingRecipes;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import charcoalPit.fluids.FluidsRegistry;
 import charcoalPit.gui.GUIHandler;
 import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TileActivePile;
+import charcoalPit.tile.TileBloom;
+import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TileCeramicPot;
 import charcoalPit.tile.TileClayPot;
 import charcoalPit.tile.TileCreosoteCollector;
@@ -57,6 +61,8 @@ public class CommonProxy {
 		GameRegistry.registerTileEntity(TileCeramicPot.class, Constants.MODID+"ceramic_pot");
 		GameRegistry.registerTileEntity(TileClayPot.class, Constants.MODID+"clay_pot");
 		GameRegistry.registerTileEntity(TileSmeltedPot.class, Constants.MODID+"broken_pot");
+		GameRegistry.registerTileEntity(TileBloomery.class, Constants.MODID+"bloomery");
+		GameRegistry.registerTileEntity(TileBloom.class, Constants.MODID+"bloom");
 		
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
@@ -158,9 +164,20 @@ public class CommonProxy {
 				}
 			}
 		}
-		Item thatch=Item.getByNameOrId(Config.ThatchID);
+		Item thatch=Item.getByNameOrId(Config.ThatchDefault);
 		if(thatch!=null){
-			ItemsRegistry.thatch_stack=new ItemStack(thatch, 1, Config.ThatchMeta);
+			ItemStack thatchStack=new ItemStack(thatch, 1, Config.ThatchMeta);
+			ItemsRegistry.thatch_stack=thatchStack.copy();
+		}
+		Item slag=Item.getByNameOrId(Config.Slag[0]);
+		if(slag!=null){
+			ItemStack slagStack=new ItemStack(slag,1,Integer.parseInt(Config.Slag[1]));
+			ItemsRegistry.slag_stack=slagStack.copy();
+		}
+		Item richSlag=Item.getByNameOrId(Config.Slag[2]);
+		if(richSlag!=null){
+			ItemStack richSlagStack=new ItemStack(richSlag,1,Integer.parseInt(Config.Slag[3]));
+			ItemsRegistry.rich_slag_stack=richSlagStack.copy();
 		}
 		for(PotteryKilnRecipe recipe:PotteryKilnRecipe.recipes){
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(recipe.input.getItem(), new DispenserPlaceKiln());

@@ -2,6 +2,7 @@ package charcoalPit.crafting;
 
 import java.util.ArrayList;
 
+import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TileClayPot.ClayPotItemHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public class OreSmeltingRecipes {
 		if(ore.isEmpty())
 			return false;
 		for(int i=0;i<alloyRecipes.size();i++){
-			if(advanced&&!alloyRecipes.get(i).isAdvanced)
+			if(!advanced&&alloyRecipes.get(i).isAdvanced)
 				continue;
 			if(alloyRecipes.get(i).isInputEqual(ore))
 				return true;
@@ -52,13 +53,13 @@ public class OreSmeltingRecipes {
 		ClayPotItemHandler kiln=new ClayPotItemHandler();
 		kiln.deserializeNBT(nbt.getCompoundTag("items"));
 		int f=0;
-		for(int i=0;i<9;i++){
+		for(int i=0;i<4;i++){
 			if(!kiln.getStackInSlot(i).isEmpty()){
 				int[] ids=OreDictionary.getOreIDs(kiln.getStackInSlot(i));
 				for(int id:ids){
 					String ore=OreDictionary.getOreName(id);
 					if(ore.startsWith("ore")){
-						f++;
+						f+=kiln.getStackInSlot(i).getCount();
 						break;
 					}
 				}
@@ -71,13 +72,11 @@ public class OreSmeltingRecipes {
 		ClayPotItemHandler kiln=new ClayPotItemHandler();
 		kiln.deserializeNBT(nbt.getCompoundTag("items"));
 		int f=0;
-		for(int i=9;i<12;i++){
-			if(!kiln.getStackInSlot(i).isEmpty()){
-				for(SmeltingFuel fuel:smeltingFuels){
-					if(fuel.isInputEqual(kiln.getStackInSlot(i))){
-						f+=fuel.value*kiln.getStackInSlot(i).getCount();
-						break;
-					}
+		if(!kiln.getStackInSlot(4).isEmpty()){
+			for(SmeltingFuel fuel:smeltingFuels){
+				if(fuel.isInputEqual(kiln.getStackInSlot(4))){
+					f+=fuel.value*kiln.getStackInSlot(4).getCount();
+					break;
 				}
 			}
 		}
@@ -87,7 +86,7 @@ public class OreSmeltingRecipes {
 	public static boolean oreKilnIsEmpty(NBTTagCompound nbt){
 		ClayPotItemHandler kiln=new ClayPotItemHandler();
 		kiln.deserializeNBT(nbt.getCompoundTag("items"));
-		for(int i=0;i<9;i++){
+		for(int i=0;i<4;i++){
 			if(!kiln.getStackInSlot(i).isEmpty()){
 				return false;
 			}
@@ -96,7 +95,7 @@ public class OreSmeltingRecipes {
 	}
 	
 	public static boolean oreKilnIsEmpty(ClayPotItemHandler kiln){
-		for(int i=0;i<9;i++){
+		for(int i=0;i<4;i++){
 			if(!kiln.getStackInSlot(i).isEmpty()){
 				return false;
 			}
@@ -108,7 +107,7 @@ public class OreSmeltingRecipes {
 		ClayPotItemHandler kiln=new ClayPotItemHandler();
 		kiln.deserializeNBT(nbt.getCompoundTag("items"));
 		int a=0;
-		for(int i=0;i<9;i++){
+		for(int i=0;i<4;i++){
 			if(!kiln.getStackInSlot(i).isEmpty())
 				a++;
 		}
@@ -137,10 +136,10 @@ public class OreSmeltingRecipes {
 				boolean b=false;
 				for(int i=0;i<recipe.recipe.length;i++){
 					boolean e=false;
-					for(int j=0;j<9;j++){
+					for(int j=0;j<4;j++){
 						if(recipe.isInputEqual(kiln.getStackInSlot(j), i)){
 							e=true;
-							kiln.setStackInSlot(j, ItemStack.EMPTY);
+							kiln.getStackInSlot(j).shrink(1);
 							break;
 						}
 					}
@@ -162,7 +161,7 @@ public class OreSmeltingRecipes {
 					return out;
 				}else{
 					if(recipe.output instanceof String){
-						ItemStack out=OreDictionary.getOres((String)recipe.output).get(0);
+						ItemStack out=OreDictionary.getOres((String)recipe.output).get(0).copy();
 						out.setCount(recipe.outAmount*r);
 						return out;
 					}
@@ -177,8 +176,135 @@ public class OreSmeltingRecipes {
 			if(recipe.isAdvanced)
 				continue;
 			if(recipe.isOutputEqual(result)){
-				return 9/recipe.recipe.length;
+				return 8/recipe.recipe.length;
 			}
+		}
+		return 0;
+	}
+	//bloomery
+	public static int BloomeryGetFuelRequired(TileBloomery bloomery){
+		int f=0;
+		int d=0;
+		for(int i=0;i<32;i++){
+			if(!bloomery.oreStack.getStackInSlot(i).isEmpty()){
+				int[] ids=OreDictionary.getOreIDs(bloomery.oreStack.getStackInSlot(i));
+				for(int id:ids){
+					String ore=OreDictionary.getOreName(id);
+					if(ore.startsWith("ore")){
+						f++;
+						break;
+					}
+					if(ore.startsWith("ingot")){
+						d++;
+						break;
+					}
+				}
+			}
+		}
+		return f+d/16+(d%16>0?1:0);
+	}
+	
+	public static int BloomeryGetFuelAvailable(TileBloomery bloomery){
+		int f=0;
+		for(int i=0;i<32;i++){
+			f+=getFuelValue(bloomery.fuelStack.getStackInSlot(i));
+		}
+		return f;
+	}
+	
+	public static int BloomeryGetRecipeAmount(ItemStack result){
+		for(AlloyRecipe recipe:alloyRecipes){
+			if(recipe.isOutputEqual(result)){
+				return recipe.outAmount;
+			}
+		}
+		return 0;
+	}
+	
+	public static int BloomeryGetMaxSpace(TileBloomery bloomery, ItemStack result){
+		for(AlloyRecipe recipe:alloyRecipes){
+			if(recipe.isOutputEqual(result)){
+				return bloomery.getMaxSpace()*8/recipe.recipe.length;
+			}
+		}
+		return 0;
+	}
+	
+	public static int BloomeryGetSlagAmount(TileBloomery bloomery){
+		int f=0;
+		for(int i=0;i<32;i++){
+			if(!bloomery.oreStack.getStackInSlot(i).isEmpty()){
+				int[] ids=OreDictionary.getOreIDs(bloomery.oreStack.getStackInSlot(i));
+				for(int id:ids){
+					String ore=OreDictionary.getOreName(id);
+					if(ore.startsWith("ore")){
+						f++;
+						break;
+					}
+				}
+			}
+		}
+		return f;
+	}
+	
+	public static boolean BloomeryIsEmpty(TileBloomery.OreStackItemHandler oreStack){
+		for(int i=0;i<32;i++){
+			if(!oreStack.getStackInSlot(i).isEmpty())
+				return false;
+		}
+		return true;
+	}
+	
+	public static ItemStack BloomeryGetOutput(TileBloomery bloomery){
+		TileBloomery.OreStackItemHandler oreStack=new TileBloomery.OreStackItemHandler(32);
+		for(AlloyRecipe recipe:alloyRecipes){
+			int r=0;
+			oreStack.deserializeNBT(bloomery.oreStack.serializeNBT());
+			while(!BloomeryIsEmpty(oreStack)){
+				boolean b=false;
+				for(int i=0;i<recipe.recipe.length;i++){
+					boolean e=false;
+					for(int j=0;j<32;j++){
+						if(recipe.isInputEqual(oreStack.getStackInSlot(j), i)){
+							e=true;
+							oreStack.getStackInSlot(j).shrink(1);
+							break;
+						}
+					}
+					if(!e){
+						b=true;
+						break;
+					}
+				}
+				if(b){
+					break;
+				}else{
+					r++;
+				}
+			}
+			if(r>0&&BloomeryIsEmpty(oreStack)){
+				if(recipe.output instanceof ItemStack){
+					ItemStack out=((ItemStack)recipe.output).copy();
+					out.setCount(recipe.outAmount*r);
+					return out;
+				}else{
+					if(recipe.output instanceof String){
+						ItemStack out=OreDictionary.getOres((String)recipe.output).get(0).copy();
+						out.setCount(recipe.outAmount*r);
+						return out;
+					}
+				}
+			}
+		}
+		return ItemStack.EMPTY;
+	}
+	
+	public static int getFuelValue(ItemStack stack){
+		if(stack.isEmpty())
+			return 0;
+		for(SmeltingFuel fuel:smeltingFuels){
+			if(fuel.isInputEqual(stack))
+				return fuel.value;
 		}
 		return 0;
 	}
@@ -188,9 +314,9 @@ public class OreSmeltingRecipes {
 		orePrefixes.add("ingot");
 		orePrefixes.add("dust");
 		
-		smeltingFuels.add(new SmeltingFuel("fuelCoal", new ItemStack(Items.COAL, 1, 0), 1));
-		smeltingFuels.add(new SmeltingFuel("fuelCharcoal", new ItemStack(Items.COAL, 1, 1), 1));
-		smeltingFuels.add(new SmeltingFuel("fuelCoke", ItemStack.EMPTY, 2));
+		smeltingFuels.add(new SmeltingFuel("fuelCoal", new ItemStack(Items.COAL, 1, 0), 2));
+		smeltingFuels.add(new SmeltingFuel("fuelCharcoal", new ItemStack(Items.COAL, 1, 1), 2));
+		smeltingFuels.add(new SmeltingFuel("fuelCoke", ItemStack.EMPTY, 4));
 		
 		addAlloyRecipe(new AlloyRecipe("ingotCopper", 1, false, true, new Object[]{"Copper"}));
 		addAlloyRecipe(new AlloyRecipe("ingotZinc", 1, false, true, new Object[]{"Zinc"}));
@@ -203,7 +329,7 @@ public class OreSmeltingRecipes {
 		addAlloyRecipe(new AlloyRecipe("ingotAluminium", 1, true, true, new Object[]{"Aluminium"}));
 		addAlloyRecipe(new AlloyRecipe("ingotAluminum", 1, true, true, new Object[]{"Aluminum"}));
 		addAlloyRecipe(new AlloyRecipe("ingotTitanium", 1, true, true, new Object[]{"Titanium"}));
-		addAlloyRecipe(new AlloyRecipe("ingotIron", 1, false, true, new Object[]{"Iron"}));
+		addAlloyRecipe(new AlloyRecipe("ingotIron", 1, doesOreExist("ingotBronze"), true, new Object[]{"Iron"}));
 		addAlloyRecipe(new AlloyRecipe("ingotNickel", 1, true, true, new Object[]{"Nickel"}));
 		addAlloyRecipe(new AlloyRecipe("ingotPlatinum", 1, true, true, new Object[]{"Platinum"}));
 		

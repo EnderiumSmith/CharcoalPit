@@ -1,0 +1,29 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:coal",
+	    "data": 1
+        },
+        "title": {
+            "translate": "advancements.tab.title"
+        },
+        "description": {
+            "translate": "advancements.tab.description"
+        },
+        "background": "minecraft:textures/blocks/coal_ore.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "crafting_table": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:crafting_table"
+                    }
+                ]
+            }
+        }
+    }
+}

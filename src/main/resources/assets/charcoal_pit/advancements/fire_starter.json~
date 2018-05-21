@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:stone_pickaxe"
+        },
+        "title": {
+            "translate": "advancements.fire_starter.title"
+        },
+        "description": {
+            "translate": "advancements.fire_starter.description"
+        }
+    },
+    "parent": "charcoal_pit:root",
+    "criteria": {
+        "fire_starter": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:fire_starter"
+                    }
+                ]
+            }
+        }
+    }
+}

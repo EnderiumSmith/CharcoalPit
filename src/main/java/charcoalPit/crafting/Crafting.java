@@ -1,6 +1,8 @@
-package charcoalPit.core;
+package charcoalPit.crafting;
 
 import charcoalPit.blocks.BlocksRegistry;
+import charcoalPit.core.Config;
+import charcoalPit.core.Constants;
 import charcoalPit.items.ItemsRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -129,6 +131,33 @@ public class Crafting {
 		ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.dyedPot[15]), new Object[]{
 				BlocksRegistry.ceramicPot, "dyeBlack"
 		}).setRegistryName("blackPot"));
+		if(OreSmeltingRecipes.doesOreExist("ingotBronze")){
+			ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.hatch), new Object[]{
+					"I",
+					"I",
+					"I",
+					'I', "blockBronze"
+			}).setRegistryName("bronze_hatch"));
+			ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.reinforcedBrick, 4), new Object[]{
+					"IBI",
+					"BIB",
+					"IBI",
+					'I', "ingotBronze", 'B', Blocks.BRICK_BLOCK
+			}).setRegistryName("bronze_brick"));
+		}else{
+			ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.hatch), new Object[]{
+					"I",
+					"I",
+					"I",
+					'I', "blockIron"
+			}).setRegistryName("iron_hatch"));
+			ForgeRegistries.RECIPES.register(new ShapedOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(BlocksRegistry.reinforcedBrick, 4), new Object[]{
+					"IBI",
+					"BIB",
+					"IBI",
+					'I', "ingotIron", 'B', Blocks.BRICK_BLOCK
+			}).setRegistryName("iron_brick"));
+		}
 		if(Config.DismantleLogPiles){
 			ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(new ResourceLocation(Constants.MODID, Constants.MODNAME), new ItemStack(ItemsRegistry.wood_stack.getItem(), 9, ItemsRegistry.wood_stack.getItemDamage()), new Object[]{
 				BlocksRegistry.logPile

@@ -2,8 +2,8 @@ package charcoalPit.core;
 
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import charcoalPit.blocks.BlocksRegistry;
-import charcoalPit.items.ItemsRegistry;
 import charcoalPit.tile.TilePotteryKiln;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -44,7 +44,7 @@ public class DispenserPlaceKiln extends BehaviorDefaultDispenseItem{
         	}
         }else if(source.getWorld().getBlockState(pos).getBlock()==BlocksRegistry.potteryKiln){
         	if(source.getWorld().getBlockState(pos).getValue(BlockPotteryKiln.TYPE)==EnumKilnTypes.EMPTY){
-        		if(!stack.isEmpty()&&stack.isItemEqual(ItemsRegistry.thatch_stack)&&stack.getCount()>=Config.ThatchAmount){
+        		if(!stack.isEmpty()&&MethodHelper.PotteryKilnIsTatch(stack)&&stack.getCount()>=Config.ThatchAmount){
         			stack.setCount(stack.getCount()-Config.ThatchAmount);
         			source.getWorld().setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.THATCH));
         			source.getWorld().playSound(null, pos, SoundEvents.BLOCK_GRASS_PLACE, SoundCategory.BLOCKS, 1F, 1F);

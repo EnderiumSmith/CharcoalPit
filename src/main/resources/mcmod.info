@@ -2,13 +2,13 @@
 {
   "modid": "charcoal_pit",
   "name": "Charcoal Pit",
-  "description": "Free shape multiblocks for charcoal and coke production",
+  "description": "A TFC recreation meant to go well with other mods. Includes choarcoal pits, coke ovens, kilns and bloomerys",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["EnderiumSmith"],
-  "credits": "inspired by TFC charcoal pits",
+  "credits": "TFC for inspiration and some textures",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

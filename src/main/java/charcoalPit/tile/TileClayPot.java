@@ -52,20 +52,20 @@ public class TileClayPot extends TileEntity{
 	public static class ClayPotItemHandler extends FilteredItemHandler{
 		
 		public ClayPotItemHandler() {
-			super(12);
+			super(5);
 		}
 		
 		@Override
 		public int getSlotLimit(int slot) {
-			if(slot<9)
-				return 1;
+			if(slot<4)
+				return 2;
 			else
-				return 3;
+				return 8;
 		}
 		
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			if(slot<9)
+			if(slot<4)
 				return OreSmeltingRecipes.isValidOre(stack, false);
 			else
 				return OreSmeltingRecipes.isValidFuel(stack);

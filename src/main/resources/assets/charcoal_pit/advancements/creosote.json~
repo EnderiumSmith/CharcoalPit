@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "forge:bucketfilled",
+	    "nbt":"{FluidName:creosote,Amount:1000}"
+        },
+        "title": {
+            "translate": "advancements.creosote.title"
+        },
+        "description": {
+            "translate": "advancements.creosote.description"
+        }
+    },
+    "parent": "charcoal_pit:funnel",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "nbt":"{FluidName:creosote}"
+                    }
+                ]
+            }
+        }
+    }
+}

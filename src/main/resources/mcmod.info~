@@ -2,7 +2,7 @@
 {
   "modid": "charcoal_pit",
   "name": "Charcoal Pit",
-  "description": "Free shape multiblocks for charcoal an coke production",
+  "description": "Free shape multiblocks for charcoal and coke production",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

@@ -1,5 +1,6 @@
 package charcoalPit.core;
 
+import charcoalPit.crafting.BrewingNBTRecipe;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;

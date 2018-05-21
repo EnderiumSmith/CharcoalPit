@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:log_pile"
+        },
+        "title": {
+            "translate": "advancements.log_pile.title"
+        },
+        "description": {
+            "translate": "advancements.log_pile.description"
+        }
+    },
+    "parent": "charcoal_pit:root",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:log_pile"
+                    }
+                ]
+            }
+        }
+    }
+}

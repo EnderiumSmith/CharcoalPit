@@ -1,12 +1,15 @@
 package charcoalPit.tile;
 
+
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
 import charcoalPit.blocks.BlocksRegistry;
 import charcoalPit.core.Config;
-import charcoalPit.core.PotteryKilnRecipe;
+import charcoalPit.crafting.PotteryKilnRecipe;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,11 +25,13 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 	
 	public int invalidTicks;
 	public int burnTime;
+	public int xp;
 	public boolean isValid;
 	public PotteryStackHandler pottery;
 	public TilePotteryKiln() {
 		invalidTicks=0;
 		burnTime=-1;
+		xp=0;
 		isValid=false;
 		pottery=new PotteryStackHandler();
 	}
@@ -42,6 +47,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 					ItemStack result=PotteryKilnRecipe.getResult(pottery.getStackInSlot(0));
 					result.setCount(pottery.getStackInSlot(0).getCount());
 					pottery.setStackInSlot(0, result);
+					xp=result.getCount();
 					this.world.setBlockState(pos, BlocksRegistry.potteryKiln.getDefaultState().withProperty(BlockPotteryKiln.TYPE, EnumKilnTypes.COMPLETE));
 					this.world.setBlockToAir(this.pos.offset(EnumFacing.UP));
 					burnTime--;
@@ -56,6 +62,14 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 			burnTime=-1;
 		}
 	}
+	public void dropInventory(){
+		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), pottery.getStackInSlot(0));
+		while(xp>0){
+			int i=EntityXPOrb.getXPSplit(xp);
+			xp-=i;
+			world.spawnEntity(new EntityXPOrb(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, i));
+		}
+	}
 	public void checkValid(){
 		boolean valid=true;
 		if(Config.RainyPottery&&this.world.isRainingAt(this.pos.offset(EnumFacing.UP))){
@@ -67,7 +81,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 		//check structure
 		for(EnumFacing facing:EnumFacing.HORIZONTALS){
 			IBlockState block=this.world.getBlockState(this.pos.offset(facing));
-			if((!block.isSideSolid(this.world, this.pos.offset(facing), facing.getOpposite()))){
+			if(!block.isSideSolid(this.world, pos.offset(facing), facing.getOpposite())){
 				valid=false;
 				break;
 			}
@@ -106,6 +120,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 		super.writeToNBT(compound);
 		compound.setInteger("invalid", invalidTicks);
 		compound.setInteger("time", burnTime);
+		compound.setInteger("xp", xp);
 		compound.setBoolean("valid", isValid);
 		compound.setTag("pottery", pottery.serializeNBT());
 		return compound;
@@ -115,6 +130,7 @@ public class TilePotteryKiln extends TileEntity implements ITickable{
 		super.readFromNBT(compound);
 		invalidTicks=compound.getInteger("invalid");
 		burnTime=compound.getInteger("time");
+		xp=compound.getInteger("xp");
 		isValid=compound.getBoolean("valid");
 		pottery.deserializeNBT(compound.getCompoundTag("pottery"));
 		System.out.println(this.world!=null);

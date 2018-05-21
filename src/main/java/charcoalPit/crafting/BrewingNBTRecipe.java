@@ -1,4 +1,4 @@
-package charcoalPit.core;
+package charcoalPit.crafting;
 
 import javax.annotation.Nonnull;
 

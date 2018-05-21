@@ -1,0 +1,39 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:coal",
+	    "data": 1
+        },
+        "title": {
+            "translate": "advancements.charcoal.title"
+        },
+        "description": {
+            "translate": "advancements.charcoal.description"
+        },
+	"frame":"goal"
+    },
+    "parent": "charcoal_pit:log_pile",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "minecraft:coal",
+			"data": 1
+                    }
+                ]
+            }
+        },
+	"raw": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:log_pile"
+                    }
+                ]
+            }
+        }
+    }
+}

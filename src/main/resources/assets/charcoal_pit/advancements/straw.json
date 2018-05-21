@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "charcoal_pit:straw"
+        },
+        "title": {
+            "translate": "advancements.straw.title"
+        },
+        "description": {
+            "translate": "advancements.straw.description"
+        }
+    },
+    "parent": "charcoal_pit:root",
+    "criteria": {
+        "item": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "charcoal_pit:straw"
+                    }
+                ]
+            }
+        }
+    }
+}
