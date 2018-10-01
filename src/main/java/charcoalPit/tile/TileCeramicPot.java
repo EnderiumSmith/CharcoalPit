@@ -1,6 +1,8 @@
 package charcoalPit.tile;
 
 import charcoalPit.blocks.BlockCeramicPot;
+import charcoalPit.blocks.BlockClayPot;
+import charcoalPit.blocks.BlockSmeltedPot;
 import charcoalPit.core.FilteredItemHandler;
 import charcoalPit.core.MethodHelper;
 import net.minecraft.block.BlockShulkerBox;
@@ -62,7 +64,9 @@ public class TileCeramicPot extends TileEntity{
 		public boolean isItemValid(int slot, ItemStack stack) {
 			if(stack.getItem() instanceof ItemBlock){
 				if(((ItemBlock)stack.getItem()).getBlock() instanceof BlockCeramicPot||
-						((ItemBlock)stack.getItem()).getBlock() instanceof BlockShulkerBox){
+						((ItemBlock)stack.getItem()).getBlock() instanceof BlockShulkerBox||
+						((ItemBlock)stack.getItem()).getBlock() instanceof BlockClayPot||
+						((ItemBlock)stack.getItem()).getBlock() instanceof BlockSmeltedPot){
 					return false;
 				}
 			}

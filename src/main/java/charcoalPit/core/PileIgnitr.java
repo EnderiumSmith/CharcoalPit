@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import charcoalPit.blocks.BlockBloomeryHatch;
+import charcoalPit.blocks.BlockCustomFurnace;
 import charcoalPit.blocks.BlockDyedPot;
 import charcoalPit.blocks.BlockPotteryKiln;
 import charcoalPit.blocks.BlockPotteryKiln.EnumKilnTypes;
@@ -16,23 +17,37 @@ import charcoalPit.tile.TilePotteryKiln;
 import charcoalPit.blocks.BlocksRegistry;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockDoublePlant.EnumPlantType;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.LootEntryTable;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
+import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
@@ -73,6 +88,10 @@ public class PileIgnitr {
 					igniteBloomery(event.getWorld(), pos);
 				}
 			}
+		}else if((Config.DisableFurnaceOre||Config.DisableVanillaPottery||Config.DisableFurnaceCharcoal)&&
+				(event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.FURNACE||
+				event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.LIT_FURNACE)){
+			event.getWorld().setBlockState(event.getPos(), BlocksRegistry.furnace.getDefaultState().withProperty(BlockCustomFurnace.FACING, event.getWorld().getBlockState(event.getPos()).getValue(BlockFurnace.FACING)));
 		}
 	}
 	public void igniteLogs(World world, BlockPos pos){
@@ -139,7 +158,7 @@ public class PileIgnitr {
 	}
 	@SubscribeEvent
 	public void getStraw(HarvestDropsEvent event){
-		if(event.getHarvester()!=null){
+		if(Config.enableStraw&&event.getHarvester()!=null){
 			if(event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHoe||
 					MethodHelper.isHoe(event.getHarvester().getHeldItemMainhand())){
 				if(!event.isSilkTouching()){
@@ -169,51 +188,29 @@ public class PileIgnitr {
 			}
 		}
 	}
+	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void removeSmelting(OreRegisterEvent event){
-		if(Config.DisableFurnaceCharcoal&&event.getName().equals("logWood")){
-			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
-			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
-				Map.Entry<ItemStack,ItemStack> entry = entries.next();
-				ItemStack result = entry.getValue();
-				ItemStack input = entry.getKey();
-				if(input.isEmpty())
-					continue;
-				int[] ids=OreDictionary.getOreIDs(input);
-				for(int id:ids){
-					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, CommonProxy.charcoal)){
-						entries.remove();
-						break;
-					}
-				}
+	public void addTooltip(ItemTooltipEvent event){
+		if(event.getItemStack().getItem()==Item.getItemFromBlock(Blocks.FURNACE)){
+			if(Config.DisableFurnaceCharcoal){
+				event.getToolTip().add("Charcoal Recipes Disabled in Vanilla Furnace");
+			}
+			if(Config.DisableFurnaceOre){
+				event.getToolTip().add("Ore Smelting Disabled in Vanilla Furnace");
+			}
+			if(Config.DisableVanillaPottery){
+				event.getToolTip().add("Pottery Recipes Disabled in Vanilla Furnace");
 			}
 		}
-		if(Config.DisableFurnaceOre&&event.getName().startsWith("ore")){
-			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
-			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
-				Map.Entry<ItemStack,ItemStack> entry = entries.next();
-				ItemStack result = entry.getValue();
-				ItemStack input = entry.getKey();
-				if(input.isEmpty())
-					continue;
-				int[] ids=OreDictionary.getOreIDs(input);
-				for(int id:ids){
-					if(OreDictionary.getOreName(id).startsWith("ore")){
-						int[] ids2=OreDictionary.getOreIDs(result);
-						boolean ok=false;
-						for(int id2:ids2){
-							if(OreDictionary.getOreName(id2).startsWith("ingot")){
-								entries.remove();
-								ok=true;
-								break;
-							}
-						}
-						if(ok){
-							break;
-						}
-					}
-				}
-			}
+	}
+	
+	@SubscribeEvent
+	public void addLoot(LootTableLoadEvent event){
+		if(event.getName().toString().equals("minecraft:chests/end_city_treasure")){
+			LootEntry entry=new LootEntryTable(new ResourceLocation(Constants.MODID, "end_aeternalis"), 1, 1000, new LootCondition[0], "end_aeternalis_entry");
+			LootPool pool=new LootPool(new LootEntry[]{entry}, new LootCondition[0], new RandomValueRange(1F), new RandomValueRange(0F), "end_aeternalis_pool");
+			event.getTable().addPool(pool);
 		}
 	}
 }

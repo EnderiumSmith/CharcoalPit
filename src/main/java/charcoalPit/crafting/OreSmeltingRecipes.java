@@ -149,6 +149,7 @@ public class OreSmeltingRecipes {
 					}
 				}
 				if(b){
+					r=0;
 					break;
 				}else{
 					r++;
@@ -277,6 +278,7 @@ public class OreSmeltingRecipes {
 					}
 				}
 				if(b){
+					r=0;
 					break;
 				}else{
 					r++;
@@ -352,7 +354,7 @@ public class OreSmeltingRecipes {
 				"Copper","Electrum"
 		}));
 		addAlloyRecipe(new AlloyRecipe("ingotInvar", 3, true, true, new Object[]{
-				"Iron","Nickel","Nickel"
+				"Iron","Iron","Nickel"
 		}));
 		addAlloyRecipe(new AlloyRecipe("ingotConstantan", 2, true, true, new Object[]{
 				"Nickel","Copper"

@@ -18,6 +18,7 @@ import charcoalPit.tile.TileBloomery;
 import charcoalPit.tile.TileCeramicPot;
 import charcoalPit.tile.TileClayPot;
 import charcoalPit.tile.TileCreosoteCollector;
+import charcoalPit.tile.TileCustomFurnace;
 import charcoalPit.tile.TilePotteryKiln;
 import charcoalPit.tile.TileSmeltedPot;
 import net.minecraft.block.BlockDispenser;
@@ -29,6 +30,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -55,14 +57,15 @@ public class CommonProxy {
 	}
 	public void init(FMLInitializationEvent e){
 		//tile entity
-		GameRegistry.registerTileEntity(TileActivePile.class, Constants.MODID+"active_pile");
-		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+"creosote_collector");
-		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+"pottery_kiln");
-		GameRegistry.registerTileEntity(TileCeramicPot.class, Constants.MODID+"ceramic_pot");
-		GameRegistry.registerTileEntity(TileClayPot.class, Constants.MODID+"clay_pot");
-		GameRegistry.registerTileEntity(TileSmeltedPot.class, Constants.MODID+"broken_pot");
-		GameRegistry.registerTileEntity(TileBloomery.class, Constants.MODID+"bloomery");
-		GameRegistry.registerTileEntity(TileBloom.class, Constants.MODID+"bloom");
+		GameRegistry.registerTileEntity(TileActivePile.class, Constants.MODID+":active_pile");
+		GameRegistry.registerTileEntity(TileCreosoteCollector.class, Constants.MODID+":creosote_collector");
+		GameRegistry.registerTileEntity(TilePotteryKiln.class, Constants.MODID+":pottery_kiln");
+		GameRegistry.registerTileEntity(TileCeramicPot.class, Constants.MODID+":ceramic_pot");
+		GameRegistry.registerTileEntity(TileClayPot.class, Constants.MODID+":clay_pot");
+		GameRegistry.registerTileEntity(TileSmeltedPot.class, Constants.MODID+":broken_pot");
+		GameRegistry.registerTileEntity(TileBloomery.class, Constants.MODID+":bloomery");
+		GameRegistry.registerTileEntity(TileBloom.class, Constants.MODID+":bloom");
+		GameRegistry.registerTileEntity(TileCustomFurnace.class, Constants.MODID+":furnace");
 		
 		GameRegistry.registerFuelHandler(new FuelRegistry());
 		MinecraftForge.EVENT_BUS.register(new PileIgnitr());
@@ -79,58 +82,11 @@ public class CommonProxy {
 		if(Config.RegisterRecipes)
 			Crafting.registerRecipes();
 		OreSmeltingRecipes.initSmeltingRecipes();
+		
+		if(Loader.isModLoaded("thaumcraft"))
+			Thaumcraft.init();
 	}
 	public void postInit(FMLPostInitializationEvent e){
-		if(Config.DisableFurnaceCharcoal){
-			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
-			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
-				Map.Entry<ItemStack,ItemStack> entry = entries.next();
-				ItemStack result = entry.getValue();
-				ItemStack input = entry.getKey();
-				if(input.isEmpty())
-					continue;
-				int[] ids=OreDictionary.getOreIDs(input);
-				for(int id:ids){
-					if(OreDictionary.getOreName(id).equals("logWood")&&ItemStack.areItemsEqual(result, CommonProxy.charcoal)){
-						entries.remove();
-						break;
-					}
-				}
-			}
-		}
-		if(Config.DisableFurnaceOre){
-			Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
-			for (Iterator<Map.Entry<ItemStack,ItemStack>> entries = recipes.entrySet().iterator(); entries.hasNext(); ){
-				Map.Entry<ItemStack,ItemStack> entry = entries.next();
-				ItemStack result = entry.getValue();
-				ItemStack input = entry.getKey();
-				if(input.isEmpty())
-					continue;
-				if(input.getItem()==Item.getItemFromBlock(Blocks.IRON_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.GOLD_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.COAL_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.DIAMOND_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.EMERALD_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.LAPIS_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.REDSTONE_ORE)||
-						input.getItem()==Item.getItemFromBlock(Blocks.QUARTZ_ORE)){
-					entries.remove();
-				}
-			}
-		}
-		if(Config.DisableVanillaPottery){
-			Map<ItemStack, ItemStack> recipes=FurnaceRecipes.instance().getSmeltingList();
-			for(Iterator<Map.Entry<ItemStack, ItemStack>> entries=recipes.entrySet().iterator(); entries.hasNext();){
-				Map.Entry<ItemStack, ItemStack> entry=entries.next();
-				ItemStack result=entry.getValue();
-				ItemStack input=entry.getKey();
-				if(input.isEmpty())
-					continue;
-				if(PotteryKilnRecipe.isValidInput(input)&&PotteryKilnRecipe.getResult(input).isItemEqual(result)){
-					entries.remove();
-				}
-			}
-		}
 		Item ash=Item.getByNameOrId(Config.AshPreference);
 		if(ash!=null){
 			ItemStack ashStack=new ItemStack(ash, 1, Config.AshMeta);
@@ -169,15 +125,21 @@ public class CommonProxy {
 			ItemStack thatchStack=new ItemStack(thatch, 1, Config.ThatchMeta);
 			ItemsRegistry.thatch_stack=thatchStack.copy();
 		}
-		Item slag=Item.getByNameOrId(Config.Slag[0]);
-		if(slag!=null){
-			ItemStack slagStack=new ItemStack(slag,1,Integer.parseInt(Config.Slag[1]));
-			ItemsRegistry.slag_stack=slagStack.copy();
-		}
-		Item richSlag=Item.getByNameOrId(Config.Slag[2]);
-		if(richSlag!=null){
-			ItemStack richSlagStack=new ItemStack(richSlag,1,Integer.parseInt(Config.Slag[3]));
-			ItemsRegistry.rich_slag_stack=richSlagStack.copy();
+		if(Config.Slag.length>=2){
+			Item slag=Item.getByNameOrId(Config.Slag[0]);
+			if(slag!=null){
+				ItemStack slagStack=new ItemStack(slag,1,Integer.parseInt(Config.Slag[1]));
+				ItemsRegistry.slag_stack=slagStack.copy();
+			}
+			if(Config.Slag.length>=4){
+				Item richSlag=Item.getByNameOrId(Config.Slag[2]);
+				if(richSlag!=null){
+					ItemStack richSlagStack=new ItemStack(richSlag,1,Integer.parseInt(Config.Slag[3]));
+					ItemsRegistry.rich_slag_stack=richSlagStack.copy();
+				}
+			}else{
+				ItemsRegistry.rich_slag_stack=ItemsRegistry.slag_stack;
+			}
 		}
 		for(PotteryKilnRecipe recipe:PotteryKilnRecipe.recipes){
 			BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(recipe.input.getItem(), new DispenserPlaceKiln());

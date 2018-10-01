@@ -82,7 +82,6 @@ public class BlockBloomeryHatch extends BlockBase implements ITileEntityProvider
 	
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		// TODO Auto-generated method stub
 		if(!pos.offset(state.getValue(FACING)).equals(fromPos)&&!pos.offset(state.getValue(FACING).getOpposite()).equals(fromPos)){
 			for(EnumFacing facing:new EnumFacing[]{EnumFacing.UP,EnumFacing.DOWN,state.getValue(FACING).rotateY(),state.getValue(FACING).rotateYCCW()}){
 				if(!MethodHelper.BloomeryIsValidBlock(worldIn, pos, facing))
@@ -114,6 +113,14 @@ public class BlockBloomeryHatch extends BlockBase implements ITileEntityProvider
 	@Override
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public int getLightValue(IBlockState state) {
+		if(state.getValue(ACTIVE))
+			return 15;
+		return super.getLightValue(state);
 	}
 	
 	@Override

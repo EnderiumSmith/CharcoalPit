@@ -58,8 +58,8 @@ public class ItemsRegistry {
 		ash_stack=new ItemStack(ash);
 		wood_stack=new ItemStack(Blocks.LOG);
 		thatch_stack=new ItemStack(ItemsRegistry.straw);
-		slag_stack=new ItemStack(Blocks.GRAVEL);
-		rich_slag_stack=new ItemStack(Blocks.GRAVEL);
+		slag_stack=ItemStack.EMPTY;
+		rich_slag_stack=ItemStack.EMPTY;
 	}
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event){
@@ -98,12 +98,6 @@ public class ItemsRegistry {
 	public static void initOreDict(){
 		OreDictionary.registerOre("fuelCoke", coke);
 		OreDictionary.registerOre("dustAsh", ash);
-		/*
-		OreDictionary.registerOre("ingotBronze", Items.NETHERBRICK);
-		OreDictionary.registerOre("ingotCopper", Items.BRICK);
-		OreDictionary.registerOre("ingotTin", Items.QUARTZ);
-		OreDictionary.registerOre("oreTin", Blocks.QUARTZ_ORE);
-		OreDictionary.registerOre("oreCopper", Blocks.REDSTONE_ORE);
-		*/
+		OreDictionary.registerOre("blockCoke", cokeBlock);
 	}
 }

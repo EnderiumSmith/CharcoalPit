@@ -41,6 +41,7 @@ public class Config {
 	public static float KilnSlagChance, BloomSlagChance;
 	public static String[] CeramicBlackList;
 	public static String[] HoeList;
+	public static boolean enableStraw=true;
 	
 	public static void readcfg(){
 		Configuration cfg=CommonProxy.config;
@@ -68,10 +69,9 @@ public class Config {
 		RegisterRecipes=cfg.getBoolean("RegisterRecipes", CATEGORY_GENERAL, true, "Set to false to disable hard coded recipes");
 		DismantleLogPiles=cfg.getBoolean("DismantleLogPiles", CATEGORY_GENERAL, true, "If log piles can be dismantled");
 		DisableVanillaPottery=cfg.getBoolean("DisableVanillaPottery", CATEGORY_GENERAL, true, "If the vanilla methods of making pottery should be disabled");
-		CeramicBlackList=cfg.getStringList("CeramicBlacklist", CATEGORY_GENERAL, new String[]{
-				
-		}, "A list of items that should not be allowed in the Ceramic Vessel due to nesting. Format is 'modID:ItemID'");
+		CeramicBlackList=cfg.getStringList("CeramicBlacklist", CATEGORY_GENERAL, new String[]{}, "A list of items that should not be allowed in the Ceramic Vessel due to nesting. Format is 'modID:ItemID'");
 		HoeList=cfg.getStringList("HoeList", CATEGORY_GENERAL, new String[]{}, "A list of non vanilla hoes that should be able to get straw. Format is modID:itemID");
+		enableStraw=cfg.getBoolean("EnableStraw", CATEGORY_GENERAL, true, "If getting straw from braking grass with a hoe should be enabled");
 		cfg.addCustomCategoryComment(CATEGORY_CHARCOAL_PIT, "Charcoal Pit Configuration");
 		CharcoalTime=cfg.getInt("CharcoalTime", CATEGORY_CHARCOAL_PIT, 18000, 1000, 1000000, "Time the charcoal pit takes to finish. 1000 Ticks = 1 MC hour");
 		CharcoalCreosote=cfg.getInt("CharcoalCreosote", CATEGORY_CHARCOAL_PIT, 50, 0, 1000, "Amount of Creosote Oil in mB produced per log");
@@ -115,7 +115,7 @@ public class Config {
 				"minecraft:red_sandstone_stairs", "*", "minecraft:purpur_stairs", "*", "charcoal_pit:bronze_reinforced_brick", "*"
 		}, "List of blocks that are valid for the bloomery structure. Format is 'modID:blockID' blocksmeta. Use '*' for 'any'");
 		cfg.addCustomCategoryComment(CATEGORY_ORE, "Ore Configuration");
-		Slag=cfg.getStringList("SlagList", CATEGORY_ORE, new String[]{"minecraft:gravel","0","minecraft:gravel","0"}, "The IDs of the (rich)slag that will drop from ore smelting. Format is 'modID:slagId' slagMeta 'modID:richSlagID' richSlagMeta");
+		Slag=cfg.getStringList("SlagList", CATEGORY_ORE, new String[]{}, "The IDs of the (rich)slag that will drop from ore smelting. Format is 'modID:slagId' slagMeta 'modID:richSlagID' richSlagMeta");
 		DisableFurnaceOre=cfg.getBoolean("DisableFurnaceOre", CATEGORY_ORE, true, "If furnace ore smelting recipes should be disabled");
 		KilnSlagChance=cfg.getFloat("KilnSlagChance", CATEGORY_ORE, 0.5F, 0F, 1F, "The chance of rich slag being dropped insted of plain slag from the ore kiln");
 		BloomSlagChance=cfg.getFloat("BloomSlagChance", CATEGORY_ORE, 0.5F, 0F, 1F, "The chance of rich slag being dropped insted of plain slag from the bloomery bloom");

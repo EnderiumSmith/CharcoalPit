@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid=Constants.MODID, name=Constants.MODNAME, version=Constants.MODVERSION, acceptedMinecraftVersions="[1.12, 1.13)", dependencies="before:quark;before:jei;")
+@Mod(modid=Constants.MODID, name=Constants.MODNAME, version=Constants.MODVERSION, acceptedMinecraftVersions="[1.12, 1.13)", dependencies="before:quark;before:jei;after:thaumcraft")
 public class CharcoalPit {
 	
 	static{

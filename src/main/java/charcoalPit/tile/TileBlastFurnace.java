@@ -9,32 +9,31 @@ import charcoalPit.core.Config;
 import charcoalPit.core.FilteredItemHandler;
 import charcoalPit.core.MethodHelper;
 import charcoalPit.crafting.OreSmeltingRecipes;
+import charcoalPit.tile.TileBloomery.OreStackItemHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-public class TileBloomery extends TileEntity implements ITickable{
+import net.minecraftforge.oredict.OreDictionary;
+/*
+public class TileBlastFurnace extends TileEntity implements ITickable{
 	
-	public OreStackItemHandler oreStack;
-	public FuelStackItemHandler fuelStack;
+	/*public OreStackItemHandler oreStack;
+	public OreStackItemHandler additiveStack;
+	public int[] smeltProgress;
 	public int burnTime;
-	public boolean isValid;
+	public int bellowTime;
 	public int delay;
-	public TileBloomery() {
-		oreStack=new OreStackItemHandler(32);
-		fuelStack=new FuelStackItemHandler(32);
-		burnTime=-1;
-		isValid=false;
-		delay=0;
+	public boolean isValid;
+	public TileBlastFurnace() {
+		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -43,57 +42,35 @@ public class TileBloomery extends TileEntity implements ITickable{
 			checkValid();
 			if(burnTime==-1){
 				delay++;
-				//check for input ores
 				if(delay>=10){
 					delay=0;
 					int l=getOreAmount()+getFuelAmount();
-					l/=16;
-					if(l<4){
-						BlockPos chimneyPos=pos.offset(world.getBlockState(pos).getValue(BlockBloomeryHatch.FACING).getOpposite());
-						BlockPos topPos=chimneyPos.offset(EnumFacing.UP,l);
+					if(l/8<4){
+						BlockPos topPos=this.pos.offset(EnumFacing.UP, l/8);
 						List<EntityItem> items=world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(topPos.getX(), topPos.getY(), topPos.getZ(), topPos.getX()+1, topPos.getY()+1, topPos.getZ()+1));
-						//dont bury etho
 						List<EntityPlayer> players=world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(topPos.getX(), topPos.getY(), topPos.getZ(), topPos.getX()+1, topPos.getY()+1, topPos.getZ()+1));
-						if(!items.isEmpty()&&players.isEmpty()&&isLayerValid(l)){
-							int o=getOreAmount()%8;
+						if(!items.isEmpty()&&players.isEmpty()&&isLayerValid(l/8)){
+							int o=l%8;
 							for(EntityItem item:items){
-								//dont pick up the output
 								if(item.getThrower()!=null&&item.getThrower().equals("Bloom"))
 									continue;
+								//TODO:
 								if(OreSmeltingRecipes.isValidOre(item.getItem(), true)){
 									while(o<8&&!item.getItem().isEmpty()&&getOreAmount()<32){
 										addOreToStack(item.getItem().splitStack(1));
 										o++;
 									}
 								}else if(OreSmeltingRecipes.isValidFuel(item.getItem())){
-									while(getFuelAmount()<getOreAmount()&&!item.getItem().isEmpty()){
+									while(o<8&&!item.getItem().isEmpty()&&getFuelAmount()<32){
 										addFuelToStack(item.getItem().splitStack(1));
+										o++;
 									}
 								}
 							}
+							//1 2 3 4
+							
 						}
-						updateStack(false);
 					}
-				}
-			}else{
-				//smelt ores
-				if(burnTime>0)
-					burnTime--;
-				else{
-					//done
-					burnTime=-1;
-					world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBloomeryHatch.ACTIVE, false));
-					deleteStack(world.getBlockState(pos).getValue(BlockBloomeryHatch.FACING));
-					//spawn bloom
-					BlockPos chimneyPos=pos.offset(world.getBlockState(pos).getValue(BlockBloomeryHatch.FACING).getOpposite());
-					world.setBlockState(chimneyPos, BlocksRegistry.bloom.getDefaultState());
-					//add result
-					TileBloom bloom=((TileBloom)world.getTileEntity(chimneyPos));
-					bloom.items.setStackInSlot(0, OreSmeltingRecipes.BloomeryGetOutput(this));
-					bloom.slag=OreSmeltingRecipes.BloomeryGetSlagAmount(this);
-					//empty stacks
-					oreStack=new OreStackItemHandler(32);
-					fuelStack=new FuelStackItemHandler(32);
 				}
 			}
 		}
@@ -108,7 +85,7 @@ public class TileBloomery extends TileEntity implements ITickable{
 	public void checkValid(){
 		if(!isValid){
 			int l=getOreAmount()+getFuelAmount();
-			int s=getMaxSpace()*16;
+			int s=getMaxSpace()*8;
 			if(l>s){
 				splitStacks(s);
 				updateStack(false);
@@ -127,15 +104,30 @@ public class TileBloomery extends TileEntity implements ITickable{
 				splitFuelStack();
 			}else{
 				splitOreStack();
+				for(int j=0;j<additiveStack.length;j++){
+					while(getAdditiveAmount(j)>getOreAmount()){
+						splitAdditiveStack(j);
+					}
+				}
+			}
+		}
+	}
+	
+	public void splitAdditiveStack(int s){
+		for(int i=31;i>=0;i--){
+			if(!additiveStack[s].getStackInSlot(i).isEmpty()){
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), additiveStack[s].getStackInSlot(i));
+				additiveStack[s].setStackInSlot(i, ItemStack.EMPTY);
+				return;
 			}
 		}
 	}
 	
 	public void splitOreStack(){
 		for(int i=31;i>=0;i--){
-			if(!oreStack.getStackInSlot(i).isEmpty()){
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), oreStack.getStackInSlot(i));
-				oreStack.setStackInSlot(i, ItemStack.EMPTY);
+			if(!ironStack.getStackInSlot(i).isEmpty()){
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), ironStack.getStackInSlot(i));
+				ironStack.setStackInSlot(i, ItemStack.EMPTY);
 				return;
 			}
 		}
@@ -154,39 +146,50 @@ public class TileBloomery extends TileEntity implements ITickable{
 	public void dropInventory(EnumFacing facing){
 		deleteStack(facing);
 		for(int i=0;i<32;i++){
-			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), oreStack.getStackInSlot(i));
-			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), fuelStack.getStackInSlot(i));
+			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY()-1, pos.getZ(), ironStack.getStackInSlot(i));
+			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY()-1, pos.getZ(), fuelStack.getStackInSlot(i));
+			for(int j=0;j<additiveStack.length;j++){
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY()-1, pos.getZ(), additiveStack[j].getStackInSlot(i));
+			}
 		}
 	}
 	
 	public void deleteStack(EnumFacing facing){
 		int l=getOreAmount()+getFuelAmount();
 		BlockPos chimneyPos=pos.offset(facing.getOpposite());
-		for(int i=0;i<l/16+(l%16>0?1:0);i++){
+		for(int i=0;i<l/8+(l%8>0?1:0);i++){
 			world.setBlockToAir(chimneyPos.offset(EnumFacing.UP, i));
 		}
 	}
 	
 	public void updateStack(boolean active){
 		int l=getOreAmount()+getFuelAmount();
-		EnumFacing hatch=world.getBlockState(pos).getValue(BlockBloomeryHatch.FACING);
-		BlockPos chimneyPos=pos.offset(hatch.getOpposite());
-		for(int i=0;i<l/16;i++){
+		BlockPos chimneyPos=this.pos;
+		for(int i=0;i<l/8;i++){
 			world.setBlockState(chimneyPos.offset(EnumFacing.UP, i), BlocksRegistry.oreLayer.getDefaultState().withProperty(BlockBloomeryOreLayer.LAYER, 8).withProperty(BlockBloomeryOreLayer.ACTIVE, active));
 		}
 		if(l%16>0){
-			world.setBlockState(chimneyPos.offset(EnumFacing.UP, l/16), BlocksRegistry.oreLayer.getDefaultState().withProperty(BlockBloomeryOreLayer.LAYER, Math.max(1, (l%16)/2)).withProperty(BlockBloomeryOreLayer.ACTIVE, active));
+			world.setBlockState(chimneyPos.offset(EnumFacing.UP, l/16), BlocksRegistry.oreLayer.getDefaultState().withProperty(BlockBloomeryOreLayer.LAYER, Math.max(1, (l%8)/2)).withProperty(BlockBloomeryOreLayer.ACTIVE, active));
 		}
-		for(int i=l/16+(l%16>0?1:0);i<4;i++){
+		for(int i=l/8+(l%8>0?1:0);i<4;i++){
 			if(world.getBlockState(chimneyPos.offset(EnumFacing.UP, i)).getBlock()==BlocksRegistry.oreLayer)
 				world.setBlockToAir(chimneyPos.offset(EnumFacing.UP, i));
 		}
 	}
 	
+	public void addAdditiveToStack(ItemStack stack, int s){
+		for(int i=0;i<=32;i++){
+			if(additiveStack[s].getStackInSlot(i).isEmpty()){
+				additiveStack[s].setStackInSlot(i, stack);
+				return;
+			}
+		}
+	}
+	
 	public void addOreToStack(ItemStack stack){
 		for(int i=0;i<32;i++){
-			if(oreStack.getStackInSlot(i).isEmpty()){
-				oreStack.setStackInSlot(i, stack);
+			if(ironStack.getStackInSlot(i).isEmpty()){
+				ironStack.setStackInSlot(i, stack);
 				return;
 			}
 		}
@@ -201,10 +204,19 @@ public class TileBloomery extends TileEntity implements ITickable{
 		}
 	}
 	
+	public int getAdditiveAmount(int s){
+		int a=0;
+		for(int i=0;i<32;i++){
+			if(!additiveStack[s].getStackInSlot(i).isEmpty())
+				a++;
+		}
+		return a;
+	}
+	
 	public int getOreAmount(){
 		int a=0;
 		for(int i=0;i<32;i++){
-			if(!oreStack.getStackInSlot(i).isEmpty())
+			if(!ironStack.getStackInSlot(i).isEmpty())
 				a++;
 		}
 		return a;
@@ -213,7 +225,20 @@ public class TileBloomery extends TileEntity implements ITickable{
 	public int getFuelAmount(){
 		int f=0;
 		for(int i=0;i<32;i++){
-			f+=OreSmeltingRecipes.getFuelValue(fuelStack.getStackInSlot(i));
+			if(!fuelStack.getStackInSlot(i).isEmpty())
+				f++;
+		}
+		return f;
+	}
+	
+	public int getFluxNeeded(){
+		int f=0;
+		for(int i=0;i<32;i++){
+			int[] ids=OreDictionary.getOreIDs(ironStack.getStackInSlot(i));
+			for(int id:ids){
+				if(OreDictionary.getOreName(id).startsWith("ore"))
+					f++;
+			}
 		}
 		return f;
 	}
@@ -238,22 +263,12 @@ public class TileBloomery extends TileEntity implements ITickable{
 	}
 	
 	public boolean isLayerValid(int layer){
-		EnumFacing hatch=world.getBlockState(pos).getValue(BlockBloomeryHatch.FACING);
-		BlockPos chimneyPos=pos.offset(hatch.getOpposite());
-		if(layer==0){
+		if(layer>=0&&layer<4){
+			BlockPos chimneyPos=this.pos.offset(EnumFacing.UP, layer);
 			if(!isValidCore(world.getBlockState(chimneyPos), chimneyPos))
 				return false;
-			for(EnumFacing facing:new EnumFacing[]{hatch.getOpposite(),hatch.rotateY(),hatch.rotateYCCW(),EnumFacing.DOWN}){
-				if(!MethodHelper.BloomeryIsValidBlock(world, chimneyPos, facing))
-					return false;
-			}
-			return isLayerValid(1);
-		}
-		if(layer>0&&layer<4){
-			if(!isValidCore(world.getBlockState(chimneyPos.offset(EnumFacing.UP, layer)), chimneyPos.offset(EnumFacing.UP, layer)))
-				return false;
 			for(EnumFacing facing:EnumFacing.HORIZONTALS){
-				if(!MethodHelper.BloomeryIsValidBlock(world, chimneyPos.offset(EnumFacing.UP, layer), facing))
+				if(!MethodHelper.BloomeryIsValidBlock(world, chimneyPos, facing))
 					return false;
 			}
 			return true;
@@ -270,26 +285,9 @@ public class TileBloomery extends TileEntity implements ITickable{
 		return !(oldState.getBlock()==newSate.getBlock());
 	}
 	
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setTag("ores", oreStack.serializeNBT());
-		compound.setTag("fuel", fuelStack.serializeNBT());
-		compound.setInteger("burnTime", burnTime);
-		return compound;
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		oreStack.deserializeNBT(compound.getCompoundTag("ores"));
-		fuelStack.deserializeNBT(compound.getCompoundTag("fuel"));
-		burnTime=compound.getInteger("burnTime");
-	}
-	
-	public static class OreStackItemHandler extends FilteredItemHandler{
+	public static class IronStackItemHandler extends FilteredItemHandler{
 		
-		public OreStackItemHandler(int size) {
+		public IronStackItemHandler(int size) {
 			super(size);
 		}
 		
@@ -304,9 +302,10 @@ public class TileBloomery extends TileEntity implements ITickable{
 		}
 		
 	}
-	public static class FuelStackItemHandler extends FilteredItemHandler{
+	
+	public static class BlastFuelItemHandler extends FilteredItemHandler{
 		
-		public FuelStackItemHandler(int size) {
+		public BlastFuelItemHandler(int size) {
 			super(size);
 		}
 		
@@ -317,9 +316,10 @@ public class TileBloomery extends TileEntity implements ITickable{
 		
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return OreSmeltingRecipes.isValidFuel(stack);
+			return true;
 		}
 		
 	}
 	
 }
+*/
